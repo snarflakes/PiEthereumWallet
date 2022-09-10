@@ -1,3 +1,5 @@
+#install web3
+
 #slideshow settings
 seconds = 43600
 delay = 5
