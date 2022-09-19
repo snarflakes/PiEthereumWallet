@@ -57,5 +57,5 @@ sudo python3 image.py
 # Add as a service: How to have the EthereumWallet Program run whenever the Pi Boots Up 
 
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
-Follow these instructions: (make sure you set USER: root)
+Follow these instructions: (make sure you set USER: root for both copies)
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
