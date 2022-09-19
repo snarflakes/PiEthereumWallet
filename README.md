@@ -7,9 +7,11 @@ Hand the hardware to your 💘 crypto noob/student/child, they hold and press th
 
 Available on ETH L1 or convert quickly to any EVM based chain and its uniswap v2 variant!
 
+On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card and each new one will generate a new wallet and be ready for onboarding.
+
 # Installation
 
-A) Basic Raspberry Pi Zero setup for NOOBS.  start here if you have no clue what to do with your hardware.
+A) Basic Raspberry Pi Zero setup for NOOBS.  start here if you have no clue what to do with your hardware or are very security minded.
 https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html
 
 OR if you want seemless wifi connectivity at every boot (best option)
