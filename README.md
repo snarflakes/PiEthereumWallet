@@ -46,7 +46,7 @@ git clone https://github.com/snarflakes/ethereumwallets.git
 cd ganpunks
 ```````````
 
-Run the script using:
+Run the script using (must run as root):
 
 `````````````
 sudo python3 image.py
