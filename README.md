@@ -7,7 +7,7 @@ Hand the hardware to your 💘 crypto noob/student/child, they hold and press th
 
 Available on ETH L1 or convert quickly to any EVM based chain and its uniswap v2 variant!
 
-On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card and each new one will generate a new wallet and be ready for onboarding.
+On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card and each new one will generate a new wallet and be ready for onboarding and walk away with a microSD card with their private key safely stored.
 
 # Installation
 
@@ -59,3 +59,7 @@ sudo python3 image.py
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
 Follow these instructions: (make sure you set USER: root for both copies)
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
+
+# For extra security in public places? Make these mods to your OS.
+
+Change your user logon to be a very strong 10 digit password with symbol/upper/lowercase letter/numbers.  Also you can reduce the rate of incorrect authentication attempts with https://www.fail2ban.org/wiki/index.php/Main_Page
