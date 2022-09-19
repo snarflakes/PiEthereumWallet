@@ -3,7 +3,7 @@
 For $30 (+ cost of microSD cards) you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
 
 Don't want the tax implications of sending your ETH?  Just send USDC. 
-Hand the hardware to your noobie, they hold and press the button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
+Hand the hardware to your 💘 crypto noob/student/child, they hold and press the button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
 
 Available on ETH L1 or convert quickly to any EVM based chain and its uniswap v2 variant!
 
