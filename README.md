@@ -1,8 +1,9 @@
 # Ethereum Hardware Starter Wallet with ST7789 IPS Display:
 
-Physically Transferrable MicroSDcard based cold ETH wallets, load and gift small cold wallets to friends and family.
-Don't want to send your ETH? 
-Just send USDC. Hand to hardware to receipt, they hold and press the button, it instantly routes a uniswap transaction to convert it all to ETH!
+For $30 + microSD card you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
+
+Don't want the tax implications of sending your ETH?  Just send USDC. 
+Hand the hardware to your noobie, they hold and press the button, it instantly routes a uniswap transaction to convert it all to ETH!
 
 # Installation
 
