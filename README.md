@@ -1,16 +1,18 @@
 # Ethereum Hardware Starter Wallet with ST7789 IPS Display:
 
-For $30 + microSD card you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
+For $30 (+ cost of microSD cards) you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
 
 Don't want the tax implications of sending your ETH?  Just send USDC. 
-Hand the hardware to your noobie, they hold and press the button, it instantly routes a uniswap transaction to convert it all to ETH!
+Hand the hardware to your noobie, they hold and press the button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
+
+Available on ETH L1 or convert quickly to any EVM based chain and its uniswap v2 variant!
 
 # Installation
 
 A) Basic Raspberry Pi Zero setup for NOOBS.  start here if you have no clue what to do with your hardware.
 https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html
 
-OR if you want seemless wifi connectivity
+OR if you want seemless wifi connectivity at every boot (best option)
 
 B) Homebridge Raspberry Pi Zero setup: add a server for easy wifi connection when traveling around to peoples houses. You need a wifi or mobile phone hotspot connection for the wallet to work.
 https://homebridge.io/raspberry-pi-image
