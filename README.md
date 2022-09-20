@@ -10,6 +10,15 @@ Available on ETH L1 or quickly convert code to any EVM based chain and its unisw
 
 On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card and when you pop a new one in, it will generate a new wallet and be ready for onboarding and the recipient can walk away with a microSD card with their private key safely stored.
 
+Plus there are a ton more buttons available to come up with your own essential wallet interactions!
+
+✅ digital signature?
+✅ send an ETH transaction out?
+✅ wallet watcher with custom alerts to phone?
+✅ gas price watcher with alerts?
+
+
+
 # Installation
 
 A) Basic Raspberry Pi Zero setup for NOOBS.  start here if you have no clue what to do with your hardware or are very security minded.
