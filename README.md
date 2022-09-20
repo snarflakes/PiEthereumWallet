@@ -6,7 +6,7 @@ Don't want the tax implications of sending your ETH?  Just send USDC.
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
 ![bank](https://user-images.githubusercontent.com/75555569/191143990-8c33be18-0b7e-4569-9f18-d8284ca2c219.jpg)
 
-Available on ETH L1 or convert quickly to any EVM based chain and its uniswap v2 variant!
+Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap v2 market variant!
 
 On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card and when you pop a new one in, it will generate a new wallet and be ready for onboarding and the recipient can walk away with a microSD card with their private key safely stored.
 
