@@ -4,6 +4,9 @@ For $30 (+ cost of microSD cards) you can make your own: Physically Transferrabl
 
 Don't want the tax implications of sending your ETH?  Just send USDC. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
+
+PARTS: battery pack (optional) - https://www.aliexpress.com/item/32954180664.html?spm=a2g0s.12269583.0.0.38da1736QdV4CH
+
 ![bank](https://user-images.githubusercontent.com/75555569/191143990-8c33be18-0b7e-4569-9f18-d8284ca2c219.jpg)
 
 Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap v2 market variant!
