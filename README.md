@@ -1,4 +1,4 @@
-# Ethereum Hardware Starter Wallet with ST7789 IPS Display:
+# Ethereum Hardware Starter Wallet for raspberry Pi and ST7789 IPS Display:
 
 For $30 (+ cost of microSD cards) you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
 
