@@ -5,13 +5,17 @@ For $30 (+ cost of microSD cards) you can make your own: Physically Transferrabl
 Don't want the tax implications of sending your ETH?  Just send USDC. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
 
-PARTS: battery pack (optional) - https://www.aliexpress.com/item/32954180664.html?spm=a2g0s.12269583.0.0.38da1736QdV4CH
+PARTS: 
+raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
+ST screen: https://a.co/d/iT952LE
+microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50a2JCb
+battery pack (optional) - https://a.co/d/fKbBJRV
 
 ![image](https://user-images.githubusercontent.com/75555569/196772201-acafc739-72cd-4259-87b0-9b90188de1ed.png)
 
-Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap v2 market variant!
+Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap market variant!
 
-On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card and when you pop a new one in, it will generate a new wallet and be ready for onboarding and the recipient can walk away with a microSD card with their private key safely stored.
+On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card (original should have saved wifi credentials prior to copying) and when you pop a new one in, it will generate a new wallet and be ready for onboarding and the recipient can walk away with a microSD card with their private key safely stored.
 
 Plus there are a ton more buttons available to come up with your own essential wallet interactions!
 
@@ -19,7 +23,6 @@ Plus there are a ton more buttons available to come up with your own essential w
 ✅ send an ETH transaction out?
 ✅ wallet watcher with custom alerts to phone?
 ✅ gas price watcher with alerts?
-
 
 
 # Installation
