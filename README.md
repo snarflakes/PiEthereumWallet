@@ -64,11 +64,17 @@ git clone https://github.com/snarflakes/ethereumwallets.git
 cd ganpunks
 ```````````
 
-Run the script using (must run as root):
+Run the ethereum L1 script using (must run as root):
 
 `````````````
 sudo python3 image.py
 `````````````
+Run the polygon L2 script using (must run as root):
+
+`````````````
+sudo python3 polygonimage.py
+`````````````
+
 
 # Add as a service: How to have the EthereumWallet Program run whenever the Pi Boots Up 
 
