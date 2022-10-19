@@ -7,7 +7,7 @@ Hand the hardware to your 💘 crypto noob/student/child, they press and hold th
 
 PARTS: battery pack (optional) - https://www.aliexpress.com/item/32954180664.html?spm=a2g0s.12269583.0.0.38da1736QdV4CH
 
-![bank](https://user-images.githubusercontent.com/75555569/191143990-8c33be18-0b7e-4569-9f18-d8284ca2c219.jpg)
+![image](https://user-images.githubusercontent.com/75555569/196772201-acafc739-72cd-4259-87b0-9b90188de1ed.png)
 
 Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap v2 market variant!
 
