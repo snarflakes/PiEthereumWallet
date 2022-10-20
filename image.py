@@ -1,14 +1,8 @@
-#install web3
-
-#slideshow settings
-seconds = 43600
-delay = 5
-ganGIF = "https://lh3.googleusercontent.com/Kz8MrB3_lIycJLtiLvrd_P0M8FdKoVHyy7B56Z-YI93M7OXYNcwda6UqZO7RtGY7k25GzCBwBYPvIyoaSoYAfBquQ73Wj_JeAeyuA0U=s0"
-#All Code Copyrighted and patent pending to Snarflakes. 
-#No unauthorized use of code allowed
-
-import smtplib
-from email.mime.text import MIMEText
+#Created by Snarflakes.
+#To Satoshi and Vitalik, cheers friends.
+#GNU General Public License v3.0
+#Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, 
+#under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights. 
 
 import csv
 import os
@@ -26,7 +20,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 #import ST7789 as ST7789
 
-#audio button code
+#button code
 import subprocess
 import board
 from gpiozero import Button
@@ -59,18 +53,38 @@ import pickle
 from random import randint
 
 import string
-
 import numpy
+import json
+import qrcode
 
+from web3 import Web3 
+from eth_account import Account
+import secrets
+from uniswap import Uniswap
+
+#connect web3
+infura_url = 'https://mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
+#infura_url = 'https://goerli.infura.io/v3/6e3044367252450f96047f6e34833089' 
+web3 = Web3(Web3.HTTPProvider(infura_url))
+
+isConnected = web3.isConnected()
+blocknumber = web3.eth.blockNumber
+print('Connected: ', isConnected, 'BlockNumber: ', blocknumber)
+
+#Primary Token Pairs: token_address's and ETH(don't forget to set custom ABI if changing USDC to a new token) Token_address is the main displayed token on home screen (needs its own abi for proper wallet amount)
+#usdc token_address goerli
+#token_address = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F'
+#token_address ETH mainnet
+token_address = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+eth = "0x0000000000000000000000000000000000000000"
 
 pickle_in = open("d.pickle","rb")
 example_d = pickle.load(pickle_in)
 print(example_d[0])
 
-
 #construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-o", "--output", type=str, default="qrcodes.csv", help="path to output CSV file containing qrcode data")
+ap.add_argument("-o", "--output", type=str, default="/boot/ethereumwallet.csv", help="path to output CSV file containing qrcode data")
 args = vars(ap.parse_args())
 
 
@@ -109,7 +123,7 @@ image.py - Display an NFT image weblink on the IPS LCD.
 
 """)
 
-opened_file = open('qrcodes.csv')
+opened_file = open('/boot/ethereumwallet.csv')
 read_file = reader(opened_file)
 apps_data = list(read_file)
 
@@ -136,135 +150,6 @@ def internet(host="8.8.8.8", port=53, timeout=3):
 		print(ex)
 		return False
 
-def art_checkers(im):
-
-    d = ImageDraw.Draw(im)
-    draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
-
-    draw.rectangle([(0,0),(30,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(30,0),(60,30)], fill=(255,255,255), outline=(0,0,0))
-    draw.rectangle([(60,0),(90,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(90,0),(120,30)], fill=(255,255,255), outline=(0,0,0))
-    draw.rectangle([(120,0),(150,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(150,0),(180,30)], fill=(255,255,255), outline=(0,0,0))
-    draw.rectangle([(180,0),(210,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(210,0),(240,30)], fill=(255,255,255), outline=(0,0,0))
-    disp.image(im)
-    time.sleep(1)
-
-
-    draw.polygon(((210,80), (0,30), (30,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (30,30), (60,30)), fill=(255,255,255), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (60,30), (90,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (90,30), (120,30)), fill=(255,255,255), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (120,30), (150,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (150,30), (180,30)), fill=(255,255,255), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (180,30), (210,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (210,30), (240,30)), fill=(255,255,255), outline=(255,255,255))
-    disp.image(im)
-    return im,d
-
-def art_checkers_fast(im):
-
-    d = ImageDraw.Draw(im)
-    draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
-
-    draw.rectangle([(0,0),(30,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(30,0),(60,30)], fill=(255,255,255), outline=(0,0,0))
-    draw.rectangle([(60,0),(90,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(90,0),(120,30)], fill=(255,255,255), outline=(0,0,0))
-    draw.rectangle([(120,0),(150,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(150,0),(180,30)], fill=(255,255,255), outline=(0,0,0))
-    draw.rectangle([(180,0),(210,30)], fill=(0,0,0), outline=(255,255,255))
-    draw.rectangle([(210,0),(240,30)], fill=(255,255,255), outline=(0,0,0))
-    disp.image(im)
-    time.sleep(1)
-
-
-    draw.polygon(((210,80), (0,30), (30,30)), fill=(0,0,0), outline=(255,255,255))
-    draw.polygon(((210,80), (30,30), (60,30)), fill=(255,255,255), outline=(255,255,255))
-    draw.polygon(((210,80), (60,30), (90,30)), fill=(0,0,0), outline=(255,255,255))
-    draw.polygon(((210,80), (90,30), (120,30)), fill=(255,255,255), outline=(255,255,255))
-    draw.polygon(((210,80), (120,30), (150,30)), fill=(0,0,0), outline=(255,255,255))
-    draw.polygon(((210,80), (150,30), (180,30)), fill=(255,255,255), outline=(255,255,255))
-    draw.polygon(((210,80), (180,30), (210,30)), fill=(0,0,0), outline=(255,255,255))
-    draw.polygon(((210,80), (210,30), (240,30)), fill=(255,255,255), outline=(255,255,255))
-    disp.image(im)
-    return im,d
-
-def art(im):
-    def r():
-        r = random.randint(0,255)
-        return r
-    def g():
-        g = random.randint(0,255)
-        return g
-    def b():
-        b = random.randint(0,255)
-        return b
-
-    def punct():
-        letters = string.punctuation + '£¬' + chr(162) + chr(165) + chr(176) + chr(222) + chr(223)
-        return random.choice(letters)
-
-    d = ImageDraw.Draw(im)
-    draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
-
-    draw.rectangle([(0,0),(30,30)], fill=(r(),g(),b()), outline=(255,255,255))
-    d.text((10,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((10,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(30,0),(60,30)], fill=(r(),g(),b()), outline=(0,0,0))
-    d.text((40,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((40,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(60,0),(90,30)], fill=(r(),g(),b()), outline=(255,255,255))
-    d.text((70,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((70,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(90,0),(120,30)], fill=(r(),g(),b()), outline=(0,0,0))
-    d.text((100,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((100,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(120,0),(150,30)], fill=(r(),g(),b()), outline=(255,255,255))
-    d.text((130,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((130,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(150,0),(180,30)], fill=(r(),g(),b()), outline=(0,0,0))
-    d.text((160,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((160,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(180,0),(210,30)], fill=(r(),g(),b()), outline=(255,255,255))
-    d.text((190,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((190,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    draw.rectangle([(210,0),(240,30)], fill=(r(),g(),b()), outline=(0,0,0))
-    d.text((220,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    d.text((220,10), f"{punct()}", fill="white", anchor="mt", font=font)
-    disp.image(im)
-
-#first one is an error showing black mountaintop
-    draw.polygon(((210,80), (0,30), (30,0)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (30,30), (60,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (60,30), (90,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (90,30), (120,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (120,30), (150,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (150,30), (180,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (180,30), (210,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    draw.polygon(((210,80), (210,30), (240,30)), fill=(0,0,0), outline=(255,255,255))
-    disp.image(im)
-    return im,d
-
 def shut_down():
     print("Shutting Down")
     image = Image.open('nftydaze4.jpg')
@@ -281,427 +166,47 @@ def shut_down():
     while 1:
         time.sleep(1)
 
-def delete_NFT():
-    global x
-    global apps_data
-    print("Delete Your NFT")
-    removenft = x 
-    updatedlist=[]
 
-    with open("qrcodes.csv",newline="") as f:
-        print(type(f))
-        read_file = reader(f)
-        mylist = list(read_file)
-        print(removenft)
-        onelink = mylist[removenft][1]
-        print(onelink)
-        for row in mylist: #for every row in the file
-            if row[1]!=onelink: #as long as the username is not in the row .......
-                updatedlist.append(row) #add each row, line by line, into a list called 'udpatedlist'
-        print(updatedlist)
-    with open("qrcodes.csv","w",newline="") as f:
-        mywriter=csv.writer(f)
-           
-        for value in updatedlist:
-            mywriter.writerow(value)
-# Write.writerows([updatedlist])
-        print("File has been updated")
-        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
-        im = Image.new("RGB", (240, 240), "fuchsia")
-        d = ImageDraw.Draw(im)
-#        art_checkers(im)
-        d.text((120, 120), "Deleted NFT", fill="white", anchor="ms", font=font)
-        d.text((120, 140), "They are gone", fill="white", anchor="ms", font=font)
-        d.text((120, 160), "Not forever", fill="white", anchor="ms", font=font)
-        d.text((120, 180), "Just", fill="white", anchor="ms", font=font)
-        d.text((120, 200), "Reload'em", fill="white", anchor="ms", font=font)
-        d.text((120, 220), "__________________", fill="white", anchor="ms", font=font)
-
-#        im = im.rotate()
-        disp.image(im)
-        time.sleep(2)
-    if x == 0:
-        print("1st nft deleted; restart list")
-        x = (len(apps_data) - 1) 
-        #force onboarding
-        no_NFT()
- #   else:
- #       x -= 1
-    time.sleep(0.25)
-
-camera_on = False
-def qr_capture():
-    global apps_data
-    global x
-    global camera_on
-#    cap = cv2.VideoCapture(-1)
-
-    print("Your QR Gan Punk")
-#Aim at QR codes; new NFT will flash when captured:  display screen Splash
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-    im = Image.new("RGB", (240, 240), "darkturquoise")
-    d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#    art(im)
-    d.text((120, 80), "Scan ETH Address QRcode", fill="black", anchor="ms", font=font)
-    d.text((120, 100), "Aim 12 inches away", fill="black", anchor="ms", font=font)
-    d.text((120, 120), "from QR Codes", fill="black", anchor="ms", font=font)
-    d.text((120, 140), "Camera is on back", fill="black", anchor="ms", font=font)
-    d.text((120, 160), "of Device", fill="black", anchor="ms", font=font)
-    d.text((120, 180), "Scanning now...", fill="black", anchor="ms", font=font)
-#    d.text((120, 200), "Press ExitScan when done!", fill="black", anchor="ms", font=font)
-    d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-
-#        im = im.rotate()
-    disp.image(im)
-
-#Start QRcode capture
-
-    cap = cv2.VideoCapture(-1)
-    font = cv2.FONT_HERSHEY_PLAIN
-    while True:
-        qrcodeData = 0 
-        _, frame = cap.read()
-        decodedObjects = pyzbar.decode(frame)
-        for obj in decodedObjects:
-            print("Data", obj.data)
-            print(type(obj.data))
-#display on screen flash confirmation of reading
-#            img = Image.new('RGB', (WIDTH, HEIGHT), color=(255, 255, 255))
-#            draw = ImageDraw.Draw(img)
-#            disp.image(img)
-#            time.sleep(0.25)
-
-#            img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
-#            draw = ImageDraw.Draw(img)
-#            disp.image(img)
-#            time.sleep(0.25)
-
-#            cv2.putText(frame, str(obj.data), (50, 50), font, 2,
-#                        (255, 0, 0), 3)
-#convertbytes object data to string
-            qrcodeData = obj.data.decode("utf-8")
-
-
-
-#flash NFT to signal capture, 
-#first go black/stop scanning/process
-
-#            try:
-#                response = requests.get(qrcodeData)
-#                image_bytes = io.BytesIO(response.content)
-#            except requests.exceptions.MissingSchema:
-#                print("Error, requests.exceptions.missingschema") 
-
-#check for mp4 image file
-#            try:
-#                img = PIL.Image.open(image_bytes)
-#            except PIL.UnidentifiedImageError:
-#                print("MPEG scan attempted")
-#                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-#                im = Image.new("RGB", (240, 240), "red")
-#                d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#                art_checkers_fast(im)
-#                d.text((120, 80), "___(°)~(°)_________", fill="black", anchor="ms", font=font)
-#                d.text((120, 100), "DON'T do that", fill="black", anchor="ms", font=font)
-#                d.text((120, 120), "NO MPEGS/VIDEOS", fill="black", anchor="ms", font=font)
-#                d.text((120, 140), "on this model", fill="black", anchor="ms", font=font)
-#                d.text((120, 160), "Press Exit Scanning", fill="black", anchor="ms", font=font)
-#                d.text((120, 180), "Direction and", fill="black", anchor="ms", font=font)
-#                d.text((120, 200), "Start over again", fill="black", anchor="ms", font=font)
-#                d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-##        im = im.rotate()
-#                disp.image(im)
-#                time.sleep(2)
-#                break
-
-#check size of image 
-#            imageload = sys.getsizeof(img.tobytes())
-#            print("img size in memory in bytes: ", imageload)
-#            if imageload >36000000:
-#                print("close but too big")
-#                time.sleep(1)
-#                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-#                im = Image.new("RGB", (240, 240), "red")
-#                d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#                art_checkers_fast(im)
-#                d.text((120, 80), "___(°)~(°)_________", fill="black", anchor="ms", font=font)
-#                d.text((120, 100), "DON'T do that", fill="black", anchor="ms", font=font)
-#                d.text((120, 120), "again", fill="black", anchor="ms", font=font)
-#                d.text((120, 140), "that NFT image file is", fill="black", anchor="ms", font=font)
-#                d.text((120, 160), "wayyy too big", fill="black", anchor="ms", font=font)
-#                d.text((120, 180), "Press Exit Scanning", fill="black", anchor="ms", font=font)
-#                d.text((120, 200), "And start over!", fill="black", anchor="ms", font=font)
-#                d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-#        im = im.rotate()
-#                disp.image(im)
-#                time.sleep(2)
-#                break
-#                if imageload >36000000:
-#                    raise stopIteration
-
-#            except stopIteration:
-#                print("close but too big")
-#                break
-            
-#            resized_img = img.resize((WIDTH, HEIGHT))
-#            try:
-#                disp.image(resized_img)
-#            except ValueError:
-#                print(resized_img.mode)
-#                resized_img = resized_img.convert('RGB')
-#                disp.image(resized_img)
-#                time.sleep(2)
-#                print("GIF scan attempted")
-#                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-#                im = Image.new("RGB", (240, 240), "red")
-#                d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#                art_checkers_fast(im)
-#                d.text((120, 80), "___(°)~(°)_________", fill="black", anchor="ms", font=font)
-#                d.text((120, 100), "DON'T do that", fill="black", anchor="ms", font=font)
-#                d.text((120, 120), "No GIFS, or it's", fill="black", anchor="ms", font=font)
-#                d.text((120, 140), "a file extension", fill="black", anchor="ms", font=font)
-#                d.text((120, 160), "issue. Press Exit", fill="black", anchor="ms", font=font)
-#                d.text((120, 180), "Scanning Direction", fill="black", anchor="ms", font=font)
-#                d.text((120, 200), "And Start over again", fill="black", anchor="ms", font=font)
-#                d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-#        im = im.rotate()
-#                disp.image(im)
-#                time.sleep(2)
-#                break
-#            time.sleep(0.50)
-#Go black
-#            print("QRCode scanned to Display Screen")
-#	clear screen to black ********Add Saved in Ascii? "press joystick down to stop scanning QRcodes?"
-#                disp.begin()
-#            img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
-#            draw = ImageDraw.Draw(img)
-#            disp.image(img)
-#            time.sleep(0.25)
-
-## Add except if trying to scan  marketplace, not pure image data 
-## clean or better interpret , and : characters in web links
-## Add except if no qrcode was scanned
-
-                #if qrcode text is currently not in our csv file, write timestampe and
-                #qrcode to disk and update the set
-            if qrcodeData not in found:
-                csv2.write("{},{}\n".format(datetime.datetime.now(), qrcodeData))
-                csv2.flush()
-                found.add(qrcodeData)
-
-
-##Screen to Confirm User Scanned
-
-                print("Scanned Successfully")
-                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-                im = Image.new("RGB", (240, 240), "green")
-                d = ImageDraw.Draw(im)
-#    art_checkers(im)
-
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-                d.text((120, 100), "Scanned    ", fill="black", anchor="ms", font=font)
-                d.text((120, 120), "Successfully", fill="black", anchor="ms", font=font)
-                d.text((120, 140), "Go To", fill="black", anchor="ms", font=font)
-                d.text((120, 160), "Psychic", fill="black", anchor="ms", font=font)
-                d.text((120, 180), "Room", fill="black", anchor="ms", font=font)
-                d.text((120, 200), "", fill="black", anchor="ms", font=font)
-                d.text((120, 220), "", fill="black", anchor="ms", font=font)
-                disp.image(im)
-#                time.sleep(5)
-
-
-#send as text message and email
-                msg = MIMEText(qrcodeData)
-                me = 'something@gmail.com'
-                you = ", ".join(['nftydaze@gmail.com','3238992566@tmomail.net'])
-#                you = '3238992566@tmomail.net','nftydaze@gmail.com'
-                msg['Subject'] = 'The subject line'
-                msg['From'] = me
-                msg['To'] = you
-
-                server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                server.login("nftydazecollect@gmail.com", "kcspbqjekdvojsqx")
-                server.send_message(msg)
-                print('mail sent')
-                server.quit()
-                time.sleep(5)
-
-##Screen to Show User Next Instructions
-
-                print("HomeScreenTransition")
-                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-                im = Image.new("RGB", (240, 240), "Blue")
-                d = ImageDraw.Draw(im)
-#    art_checkers(im)
-
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-                d.text((120, 100), "Creature Key    ", fill="black", anchor="ms", font=font)
-                d.text((120, 120), "Press the Button", fill="black", anchor="ms", font=font)
-                d.text((120, 140), "to Receive", fill="black", anchor="ms", font=font)
-                d.text((120, 160), "", fill="black", anchor="ms", font=font)
-                d.text((120, 180), "", fill="black", anchor="ms", font=font)
-                d.text((120, 200), "", fill="black", anchor="ms", font=font)
-                d.text((120, 220), "", fill="black", anchor="ms", font=font)
-                disp.image(im)
-#    time.sleep(20)
-
-                return 0            
-
-#                cap.release()
-#                cv2.destroyAllWindows()
-
-            if qrcodeData in found:
-                print("already scanned that one")
-
-##Screen to Tell User its a repeat
-
-                print("RepeatQrCode")
-                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-                im = Image.new("RGB", (240, 240), "yellow")
-                d = ImageDraw.Draw(im)
-#    art_checkers(im)
-
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-                d.text((120, 100), "Already Scanned    ", fill="black", anchor="ms", font=font)
-                d.text((120, 120), "That QR", fill="black", anchor="ms", font=font)
-                d.text((120, 140), "Code", fill="black", anchor="ms", font=font)
-                d.text((120, 160), "", fill="black", anchor="ms", font=font)
-                d.text((120, 180), "", fill="black", anchor="ms", font=font)
-                d.text((120, 200), "", fill="black", anchor="ms", font=font)
-                d.text((120, 220), "", fill="black", anchor="ms", font=font)
-                disp.image(im)
-                time.sleep(5)
-
-
-##Screen to Show User Next Instructions
-                print("HomeScreenTransition")
-                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-                im = Image.new("RGB", (240, 240), "Blue")
-                d = ImageDraw.Draw(im)
-#    art_checkers(im)
-
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-                d.text((120, 100), "Creature Key    ", fill="black", anchor="ms", font=font)
-                d.text((120, 120), "Press the Button", fill="black", anchor="ms", font=font)
-                d.text((120, 140), "to Receive", fill="black", anchor="ms", font=font)
-                d.text((120, 160), "", fill="black", anchor="ms", font=font)
-                d.text((120, 180), "", fill="black", anchor="ms", font=font)
-                d.text((120, 200), "", fill="black", anchor="ms", font=font)
-                d.text((120, 220), "", fill="black", anchor="ms", font=font)
-                disp.image(im)
-
-                return 0 
-#                cap.release()
-#                cv2.destroyAllWindows()
-
-        
-#        if qrcodeData == True:
-#            cap.release()
-#            cv2.destroyAllWindows()
-
-#            break
-
-##        if buttonR.is_pressed:
-
-#Splash: ALL Stored:  Resume Selecting Your NFT to display
-##            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-##            im = Image.new("RGB", (240, 240), "gold")
-##            d = ImageDraw.Draw(im)
-#                d.line(((0, 120), (200, 120)), "gray")
-#                d.line(((120, 0), (120, 200)), "gray")
-#            art(im)
- #           d.text((120, 80), "___(°)~(°)_________", fill="black", anchor="ms", font=font)
- #           d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
-##            d.text((120, 120), "Ended QRCodes scanning!", fill="black", anchor="ms", font=font)
-##            d.text((120, 140), "Press either Scroll", fill="black", anchor="ms", font=font)
-##            d.text((120, 160), "Direction to select", fill="black", anchor="ms", font=font)
-##            d.text((120, 180), "your preferred NFT", fill="black", anchor="ms", font=font)
-##            d.text((120, 200), "to be displayed", fill="black", anchor="ms", font=font)
-##            d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-#    im = im.rotate(180)
-##            disp.image(im)
-##            time.sleep(2)
-#set carousel at newest added nft: display new one here too?
-##            opened_file = open('qrcodes.csv')
-##            read_file = reader(opened_file)
-##            apps_data = list(read_file)
-##            x = (len(apps_data) - 2)
-##            print("Saved your punk")
-##            break
-#set condition if no qrcode Data
-#free camera object and exit
-    cap.release()
-    cv2.destroyAllWindows()
-    return
-#    print(qrcodeData)
-
-#    camera_on = not camera_on
-
-def scroll_NFT():
-    global apps_data
-    global x
+def refresh():
     if internet():
-        print("Your Saved Gan Punks")
-        x += 1
-#        
-        opened_file = open('qrcodes.csv')
-        read_file = reader(opened_file)
-        apps_data = list(read_file)
-        if x > (len(apps_data) - 1):
-            x = 0
-        if x < 0:
-            x = 0
+        print("Refresh")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
+        im = Image.new("RGB", (240, 240), (223,255,0))
+        d = ImageDraw.Draw(im)
+        d.text((120, 90), "Refreshing Wallet", fill="black", anchor="ms", font=font)
+        d.text((120, 110), "Info...", fill="black", anchor="ms", font=font)
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 12)
+        d.text((55, 200), "Etherscan", fill="black", anchor="ms", font=font)
+        d.text((55, 210), "Transaction", fill="black", anchor="ms", font=font)
+        d.text((55, 220), "History", fill="black", anchor="ms", font=font)
 
-        try:
-            onelink = apps_data[x][1]
+# Display qrcode link to etherscan wallet info
+        disp.image(im)
 
-        except IndexError:
-            print("Empty qrcode data")
-            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-            im = Image.new("RGB", (240, 240), "red")
-            d = ImageDraw.Draw(im)
-#            art_checkers_fast(im)
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-            d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
-            d.text((120, 120), "No QRcodes", fill="black", anchor="ms", font=font)
-            d.text((120, 140), "are loaded yet", fill="black", anchor="ms", font=font)
-            d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
-            d.text((120, 180), "Turn on unit again", fill="black", anchor="ms", font=font)
-            d.text((120, 200), "when you are ready", fill="black", anchor="ms", font=font)
-            d.text((120, 220), "___to_____scan____", fill="black", anchor="ms", font=font)
-            disp.image(im)
-            time.sleep(20)
-            shut_down()
+        qr = qrcode.QRCode()
+        qr.add_data(f"https://etherscan.io/address/{(apps_data[0][1])}")
+#    qr.add_data(wallet)
+        qr.make()
+        imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
 
-        print(len(apps_data))
+#it did say WIDTH,HEIGHT)
+        imgrender2 = imgrender.resize((120, 120))
 
-#display next NFT in order of CSV
-        response = requests.get(onelink)
-        image_bytes = io.BytesIO(response.content)
 #check for bad link
         try:
-            img = PIL.Image.open(image_bytes)
-            resized_img = img.resize((WIDTH, HEIGHT))
-            disp.image(resized_img)
-            time.sleep(0.25)            
+            disp.image(imgrender2)
+#            time.sleep(0.25)            
         except PIL.UnidentifiedImageError:
             print("Bad Link/File")
+
+#        disp.image(im)
+        time.sleep(8)
+        homescreen()
+
     else:
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
         im = Image.new("RGB", (240, 240), "red")
         d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#        art_checkers_fast(im)
-#        d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
         d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
         d.text((120, 120), "You are out", fill="black", anchor="ms", font=font)
         d.text((120, 140), "of wifi range", fill="black", anchor="ms", font=font)
@@ -714,40 +219,49 @@ def scroll_NFT():
         disp.image(im)
         print("no internet available")
  
-def reverse_scroll_NFT():
-    global apps_data
-    global x
-#reverse direction scrolling
-    gif_player.play()
-   
+ 
 def no_NFT():
-    opened_file = open('qrcodes.csv')
+    global apps_data
+    opened_file = open('/boot/ethereumwallet.csv')
     read_file = reader(opened_file)
     apps_data = list(read_file)
     if (len(apps_data)) == 0:
-        print("No NFT's stored")
+        print("No wallet stored")
         if internet():
             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
             im = Image.new("RGB", (240, 240), "antiquewhite")
             d = ImageDraw.Draw(im)
-#            d.line(((0, 120), (200, 120)), "gray")
-#            d.line(((120, 0), (120, 200)), "gray")
-#            art(im) 
-            d.text((120, 100), "Hi! Own'm and Show'm.", fill="black", anchor="ms", font=font)
-            d.text((120, 120), "Find an NFT on opensea.io", fill="black", anchor="ms", font=font)
-            d.text((120, 140), "Images! no GIFS/Videos.", fill="black", anchor="ms", font=font)
-            d.text((120, 160), "QRcodeScan starts in 30s", fill="black", anchor="ms", font=font)
-#            d.text((120, 180), "QR code scanning in 30sn", fill="black", anchor="ms", font=font)
-#            d.text((120, 10), "white screen flashes!", fill="black", anchor="ms", font=font)
+            d.text((120, 100), "Hi! Generating...", fill="black", anchor="ms", font=font)
+            d.text((120, 120), "A New ETH Wallet!", fill="black", anchor="ms", font=font)
             d.text((120, 200), "Unit shuts down if", fill="black", anchor="ms", font=font)
-            d.text((120, 220), "no internet or no NFTs", fill="black", anchor="ms", font=font)
+            d.text((120, 220), "no internet.", fill="black", anchor="ms", font=font)
 
 #       im = im.rotate()
             disp.image(im)
-            time.sleep(40)
+            time.sleep(20)
 
-            qr_capture()
+# generate a wallet
+            priv = secrets.token_hex(32)
+            private_key = "0x" + priv
+            print ("SAVE BUT DO NOT SHARE THIS:", private_key)
+            acct = Account.from_key(private_key)
+            print(acct)
+            print("Address:", acct.address)
             time.sleep(0.25)
+
+# print current account value
+            balance = web3.eth.getBalance(acct.address)
+            print('Account Balance: ', (web3.fromWei(balance, 'Ether')))
+
+#store address in ethereumwallet.csv
+            csv2.write("{},{},{}\n".format(datetime.datetime.now(), acct.address, private_key))
+            csv2.flush()
+
+##Screen to Confirm User Scanned
+            print("Stored Keys Successfully")
+            opened_file = open('/boot/ethereumwallet.csv')
+            read_file = reader(opened_file)
+            apps_data = list(read_file)
 
         else:
             print("still no internet")
@@ -766,34 +280,11 @@ def push_button2():
         diff=-start_time+now_time
 
     if diff < hold_time :
-        delete_NFT()
+        showkey()
     else:
-        long_push2()
+        print("no button function yet")
+#        long_push2()
 
-def long_push2():
-    print("Reset NFT storage")
-    print("in 1 minutes all stored NFT's will be wiped out then device will restart")
-    print("quickly switch power off button to stop process")
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
-    im = Image.new("RGB", (240, 240), "red")
-    d = ImageDraw.Draw(im)
-#            d.line(((0, 120), (200, 120)), "gray")
-#            d.line(((120, 0), (120, 200)), "gray")
-#    art_checkers(im)
-#        d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-#        d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
-    d.text((120, 120), "Delete all NFTs", fill="black", anchor="ms", font=font)
-    d.text((120, 140), "They will ALL be gone", fill="black", anchor="ms", font=font)
-    d.text((120, 160), "in 1 minute and", fill="black", anchor="ms", font=font)
-    d.text((120, 180), "device will Reset.", fill="black", anchor="ms", font=font)
-    d.text((120, 200), "Flip Power Switch", fill="black", anchor="ms", font=font)
-    d.text((120, 220), "NOW if done in Error", fill="black", anchor="ms", font=font)
-
-    disp.image(im)
-    time.sleep(20)
-    os.remove('qrcodes.csv')
-    time.sleep(0.25)
-    os.system("sudo reboot now")
 
 def push_button():
     start_time=time.time()
@@ -805,31 +296,186 @@ def push_button():
         diff=-start_time+now_time
 
     if diff < hold_time :
-#        slideshow_mode()
-#        scroll_NFT()
-        qr_capture()
-
-# track length of time button pressed?
-
-#    elif button3.is_released and diff >= 10 and diff < 20:
-#        print("held for 10 to 20 seconds")
-
-#    elif button3.is_released and diff >= 2 and diff < 10:
-#        print("held for 2 to 10 seconds")
+        refresh()
 
     else:
-        long_push()
+        transactions()
 
-def long_push():
+def transactions():
 
-    global apps_data
-    print("LongPushButton1")
-#    deleted slideshow function
+    print("transaction button pressed")
     if internet():
         print("internet")
-        qr_capture()
+        
     else:
        print("no internet available")
+
+    try:
+        wallet = apps_data[0][1]
+        secretkey = apps_data[0][2]
+
+    except IndexError:
+        print("Empty data")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+        im = Image.new("RGB", (240, 240), "red")
+        d = ImageDraw.Draw(im)
+        d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
+        d.text((120, 120), "No ethereum wallet", fill="black", anchor="ms", font=font)
+        d.text((120, 140), "are loaded yet", fill="black", anchor="ms", font=font)
+        d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
+        d.text((120, 180), "Turn on unit again", fill="black", anchor="ms", font=font)
+        d.text((120, 200), "when you are ready", fill="black", anchor="ms", font=font)
+        d.text((120, 220), "to scan a QRcode", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        time.sleep(20)
+        shut_down()
+
+#transparency for boxes(gas costs?)
+    TINT_COLOR = (0, 0, 0)  # Black
+    TRANSPARENCY = .3  # Degree of transparency, 0-100%
+    OPACITY = int(255 * TRANSPARENCY)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+    img = Image.new("RGBA", (240, 240), "white")
+    d = ImageDraw.Draw(img)
+
+#add in a image layer ontop of white background, way of eliminated transparent layer too
+    picture_1 = Image.open("nftydaze4.jpg").convert('RGBA')
+    image = picture_1.resize((50, 50))
+    img.paste(image, (50, 50))
+    d.text((80, 100), "USDC->ETH", fill="black", anchor="ms", font=font)
+    d.text((84, 120), "  Transaction Sent...", fill="black", anchor="ms", font=font)
+    disp.image(img)
+
+#run different function that just generates blank screen with name on it
+
+# Make a blank image the same size as the image for the rectangle, initialized
+# to a fully transparent (0% opaque) version of the tint color, then draw a
+# semi-transparent version of the square on it.
+    overlay = Image.new('RGBA', img.size, TINT_COLOR+(0,))
+    draw = ImageDraw.Draw(overlay)  # Create a context for drawing things on it.
+#    draw.rectangle(((10, 200), (100, 240)), fill=TINT_COLOR+(OPACITY,))
+    draw.rounded_rectangle(((10, 140), (100, 220)), fill=TINT_COLOR+(OPACITY,), outline="black", width=1, radius=3)
+
+#draw.rounded_rectangle((50, 50, 150, 150), fill="blue", outline="yellow", width=3, radius=7)
+
+#write on screen and pull up Ethereum account value
+    acct = Account.from_key(secretkey)
+    print(acct)
+    print("Address:", acct.address)
+    print(wallet)
+    time.sleep(0.25)
+# print current ETH account value
+    balance = web3.eth.getBalance(acct.address)
+    print('Account Balance: ', (web3.fromWei(balance, 'Ether')))
+
+# USDC ABI in order to print amount of USDC present
+    abi = json.loads('[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"authorizer","type":"address"},{"indexed":true,"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"AuthorizationCanceled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"authorizer","type":"address"},{"indexed":true,"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"AuthorizationUsed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_account","type":"address"}],"name":"Blacklisted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newBlacklister","type":"address"}],"name":"BlacklisterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newMasterMinter","type":"address"}],"name":"MasterMinterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"minter","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"minter","type":"address"},{"indexed":false,"internalType":"uint256","name":"minterAllowedAmount","type":"uint256"}],"name":"MinterConfigured","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldMinter","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":false,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"PauserChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newRescuer","type":"address"}],"name":"RescuerChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_account","type":"address"}],"name":"UnBlacklisted","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"inputs":[],"name":"CANCEL_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"RECEIVE_WITH_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TRANSFER_WITH_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"authorizer","type":"address"},{"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"authorizationState","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"blacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"blacklister","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"authorizer","type":"address"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"cancelAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"},{"internalType":"uint256","name":"minterAllowedAmount","type":"uint256"}],"name":"configureMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currency","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"decrement","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"increment","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"tokenName","type":"string"},{"internalType":"string","name":"tokenSymbol","type":"string"},{"internalType":"string","name":"tokenCurrency","type":"string"},{"internalType":"uint8","name":"tokenDecimals","type":"uint8"},{"internalType":"address","name":"newMasterMinter","type":"address"},{"internalType":"address","name":"newPauser","type":"address"},{"internalType":"address","name":"newBlacklister","type":"address"},{"internalType":"address","name":"newOwner","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"newName","type":"string"}],"name":"initializeV2","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"lostAndFound","type":"address"}],"name":"initializeV2_1","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"isBlacklisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"masterMinter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"}],"name":"minterAllowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pauser","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"validAfter","type":"uint256"},{"internalType":"uint256","name":"validBefore","type":"uint256"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"receiveWithAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"}],"name":"removeMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"rescueERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rescuer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"validAfter","type":"uint256"},{"internalType":"uint256","name":"validBefore","type":"uint256"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"transferWithAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"unBlacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newBlacklister","type":"address"}],"name":"updateBlacklister","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newMasterMinter","type":"address"}],"name":"updateMasterMinter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newPauser","type":"address"}],"name":"updatePauser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newRescuer","type":"address"}],"name":"updateRescuer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]')
+
+#Specific Token desired for displaying amount to terminal
+#    token_address = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F'
+    token_contract = web3.eth.contract(address=token_address, abi=abi) # declaring the token contract
+    token_balance = token_contract.functions.balanceOf(acct.address).call() # returns int with balance, without decimals
+
+#need to put .call() at the end to call the smart contract #ALSO need to convert supply to Wei which is 6-18 decimal places)
+    print('TokenBalance: ', token_balance/1000000)
+#print('Contract Name: ', contract.functions.name().call())
+    print('Symbol: ', token_contract.functions.symbol().call())
+
+    req = requests.get('https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=UHM6EST7PIJ9RIKCYVRSA1NEV1TFJB1PYQ')
+    t = json.loads(req.content)
+
+#print(t)
+    print('SafeGasPrice', t['result']['SafeGasPrice'])
+    print('ProposeGasPrice', t['result']['ProposeGasPrice'])
+    print('FastGasPrice', t['result']['FastGasPrice'])
+
+    gas = t['result']['FastGasPrice']
+    print(type(gas))
+    print(gas)
+
+# define the sender address and prints the balance (in ETH)
+    balance = web3.eth.get_balance(wallet)
+    print("This address has:", web3.fromWei(balance, "ether"), "ETH")
+
+##################check for presence of USDC or defined token_address token
+    if token_balance == 0:
+        print("Insufficient USDC for transaction to be performed")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+        im = Image.new("RGB", (240, 240), "orange")
+        d = ImageDraw.Draw(im)
+        d.text((120, 100), "Insufficient Funds", fill="black", anchor="ms", font=font)
+        d.text((120, 120), "for Transaction:", fill="black", anchor="ms", font=font)
+        d.text((120, 160), "USDC amount is 0", fill="black", anchor="ms", font=font)
+        d.text((120, 180), "Recheck USDC present", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        time.sleep(10)
+        homescreen()
+        return
+
+#############################################################################################transaction
+#Swap using uniswap-python module/ address's pulled at top of this function
+    version = 3                       # specify which version of Uniswap to use
+    uniswap = Uniswap(address=wallet, private_key=secretkey, version=version, provider=infura_url)
+
+#Terminal Display of swap quote
+    print("1 usdc value in eth")
+#    print(uniswap.get_price_input(token_address, eth, 10**6, fee=500))
+    price = (uniswap.get_price_input(token_address, eth, 10**6, fee=500)/ (10 ** 18))
+    print('%.08f' % price)
+
+#Actual Swap Code need different "1*10**6" depending on specific token, most are defined as this 1*10**18
+    try:
+        tx_hash = uniswap.make_trade(token_address, eth, token_balance, fee=500)
+        print("USDC to ETH tx sent")
+        print(web3.toHex(tx_hash))
+        time.sleep(3)
+    except ValueError:
+        print("Insufficient funds for swap transaction")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+        im = Image.new("RGB", (240, 240), "orange")
+        d = ImageDraw.Draw(im)
+        d.text((120, 100), "Failed Transaction", fill="black", anchor="ms", font=font)
+        d.text((120, 120), "Insufficient Gas Funds", fill="black", anchor="ms", font=font)
+        d.text((120, 140), "for Swap Transaction:", fill="black", anchor="ms", font=font)
+        d.text((120, 160), "Recheck ETH amount(for gas)", fill="black", anchor="ms", font=font)
+#        im = im.rotate()
+        disp.image(im)
+        time.sleep(20)
+        homescreen()
+        return
+
+#draw token values
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+#        im = Image.new("RGB", (150, 50))
+    d = ImageDraw.Draw(overlay)                
+    d.text((50, 175), " Tx Status in", fill="black", anchor="ms", font=font)
+    d.text((50, 195), "QRcode->", fill="black", anchor="ms", font=font)
+
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
+    d.text((60, 235), "Press Button to Refresh", fill="black", anchor="ms", font=font)
+
+# Alpha composite these two images together to obtain the desired result.
+    img = Image.alpha_composite(img, overlay)
+    img = img.convert("RGB") # Remove alpha for saving in jpg format.
+    disp.image(img)
+
+# add qrcode to right corner
+    qr = qrcode.QRCode()
+    qr.add_data(f"https://etherscan.io/tx/{web3.toHex(tx_hash)}")
+#    qr.add_data(wallet)
+    qr.make()
+    imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+
+#it did say WIDTH,HEIGHT)
+    imgrender2 = imgrender.resize((120, 120))
+
+#check for bad link
+    try:
+        disp.image(imgrender2)
+#            time.sleep(0.25)            
+    except PIL.UnidentifiedImageError:
+        print("Bad Link/File")
+
 
 def flip_screen():
     example_d[0], example_d[1] = example_d[1], example_d[0]
@@ -837,23 +483,13 @@ def flip_screen():
     pickle_out = open("d.pickle","wb")
     pickle.dump(example_d, pickle_out)
     pickle_out.close()
-#    return example_d
-
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 30)
     im = Image.new("RGB", (240, 240), "orange")
     d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#    art_checkers(im)
-#    d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-#       d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
     d.text((120, 120), "Flip Mode", fill="black", anchor="ms", font=font)
     d.text((120, 140), "Squad:", fill="black", anchor="ms", font=font)
     d.text((120, 160), "Activated", fill="black", anchor="ms", font=font)
     d.text((120, 180), "Rebooting....", fill="black", anchor="ms", font=font)
-#        d.text((120, 200), "Press Down when done!", fill="black", anchor="ms", font=font)
-#        d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-
 #        im = im.rotate()
     disp.image(im)
     time.sleep(3)
@@ -862,7 +498,167 @@ def flip_screen():
     disp.image(img)
     time.sleep(0.25)
     os.system("sudo reboot now")
-    
+
+def homescreen():
+#might need to move higher so variables are known
+    print("Home Wallet Screen")
+
+    try:
+        wallet = apps_data[0][1]
+        secretkey = apps_data[0][2]
+
+    except IndexError:
+        print("Empty data")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+        im = Image.new("RGB", (240, 240), "red")
+        d = ImageDraw.Draw(im)
+        d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
+        d.text((120, 120), "No ethereum wallet", fill="black", anchor="ms", font=font)
+        d.text((120, 140), "loaded yet", fill="black", anchor="ms", font=font)
+        d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
+        d.text((120, 180), "Turn on unit again", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        time.sleep(20)
+        shut_down()
+
+#transparency for boxes
+    TINT_COLOR = (0, 0, 0)  # Black
+    TRANSPARENCY = .3  # Degree of transparency, 0-100%
+    OPACITY = int(255 * TRANSPARENCY)
+
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf", 22)
+    img = Image.new("RGBA", (240, 240), "white")
+    d = ImageDraw.Draw(img)
+
+#add in a image layer ontop of white background, way of eliminated transparent layer too
+    picture_1 = Image.open("nftydaze4.jpg").convert('RGBA')
+    image = picture_1.resize((50, 50))
+    img.paste(image, (50, 50))
+    d.text((70, 110), "  ETH Wallet ", fill="black", anchor="ms", font=font)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf", 9)
+    d.text((120, 20), wallet, fill="black", anchor="ms", font=font)
+    disp.image(img)
+
+#run different function that just generates blank screen with name on it
+
+# Make a blank image the same size as the image for the rectangle, initialized
+# to a fully transparent (0% opaque) version of the tint color, then draw a
+# semi-transparent version of the square on it.
+    overlay = Image.new('RGBA', img.size, TINT_COLOR+(0,))
+    draw = ImageDraw.Draw(overlay)  # Create a context for drawing things on it.
+#    draw.rectangle(((10, 200), (100, 240)), fill=TINT_COLOR+(OPACITY,))
+    draw.rounded_rectangle(((5, 185), (118, 240)), fill=TINT_COLOR+(OPACITY,), outline="black", width=1, radius=3)
+    draw.ellipse((130, 30, 220, 100), fill = 'blue', outline ='blue')
+
+#write on screen and pull up Ethereum account value
+    acct = Account.from_key(secretkey)
+    print(acct)
+    print("Address:", acct.address)
+    print(wallet)
+    time.sleep(0.25)
+# print current ETH account value
+    balance = web3.eth.getBalance(acct.address)
+    print('Account Balance: ', (web3.fromWei(balance, 'Ether')))
+
+# print  USDC or main token_address selected (make sure correct ABI is here)
+#ABI for usdc goerli
+    abi = json.loads('[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"authorizer","type":"address"},{"indexed":true,"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"AuthorizationCanceled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"authorizer","type":"address"},{"indexed":true,"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"AuthorizationUsed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_account","type":"address"}],"name":"Blacklisted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newBlacklister","type":"address"}],"name":"BlacklisterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newMasterMinter","type":"address"}],"name":"MasterMinterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"minter","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"minter","type":"address"},{"indexed":false,"internalType":"uint256","name":"minterAllowedAmount","type":"uint256"}],"name":"MinterConfigured","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldMinter","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":false,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"PauserChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newRescuer","type":"address"}],"name":"RescuerChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_account","type":"address"}],"name":"UnBlacklisted","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"inputs":[],"name":"CANCEL_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"RECEIVE_WITH_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TRANSFER_WITH_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"authorizer","type":"address"},{"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"authorizationState","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"blacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"blacklister","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"authorizer","type":"address"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"cancelAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"},{"internalType":"uint256","name":"minterAllowedAmount","type":"uint256"}],"name":"configureMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currency","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"decrement","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"increment","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"tokenName","type":"string"},{"internalType":"string","name":"tokenSymbol","type":"string"},{"internalType":"string","name":"tokenCurrency","type":"string"},{"internalType":"uint8","name":"tokenDecimals","type":"uint8"},{"internalType":"address","name":"newMasterMinter","type":"address"},{"internalType":"address","name":"newPauser","type":"address"},{"internalType":"address","name":"newBlacklister","type":"address"},{"internalType":"address","name":"newOwner","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"newName","type":"string"}],"name":"initializeV2","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"lostAndFound","type":"address"}],"name":"initializeV2_1","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"isBlacklisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"masterMinter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"}],"name":"minterAllowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pauser","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"validAfter","type":"uint256"},{"internalType":"uint256","name":"validBefore","type":"uint256"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"receiveWithAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"}],"name":"removeMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"rescueERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rescuer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"validAfter","type":"uint256"},{"internalType":"uint256","name":"validBefore","type":"uint256"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"transferWithAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"unBlacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newBlacklister","type":"address"}],"name":"updateBlacklister","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newMasterMinter","type":"address"}],"name":"updateMasterMinter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newPauser","type":"address"}],"name":"updatePauser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newRescuer","type":"address"}],"name":"updateRescuer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]')
+    token_declare = web3.eth.contract(address=token_address, abi=abi) # declaring the token contract
+    token_balance = token_declare.functions.balanceOf(acct.address).call() # returns int with balance, without decimals
+
+#need to put .call() at the end to call the smart contract
+#convert supply to Wei witch is 18 decimal places)
+    print('TokenBalance: ', token_balance/1000000)
+#print('Contract Name: ', contract.functions.name().call())
+    print('Symbol: ', token_declare.functions.symbol().call())
+
+    req = requests.get('https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=UHM6EST7PIJ9RIKCYVRSA1NEV1TFJB1PYQ')
+    t = json.loads(req.content)
+
+#print(t)
+    print('SafeGasPrice', t['result']['SafeGasPrice'])
+    print('ProposeGasPrice', t['result']['ProposeGasPrice'])
+    print('FastGasPrice', t['result']['FastGasPrice'])
+
+#draw token values
+
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+#        im = Image.new("RGB", (150, 50))
+    d = ImageDraw.Draw(overlay)                
+    d.text((60, 210), "ETH:  " + str(round(web3.fromWei(balance, 'Ether'), 3)), fill="black", anchor="ms", font=font)
+    d.text((60, 230), str(token_declare.functions.symbol().call()) + ":" + str(round(token_balance/1000000, 2)), fill="black", anchor="ms", font=font)
+    d.text((170, 70), "Gas " + str(t['result']['FastGasPrice']), fill="white", anchor="ms", font=font)
+
+#        disp.image(resized_img)
+
+# Alpha composite these two images together to obtain the desired result.
+    img = Image.alpha_composite(img, overlay)
+    img = img.convert("RGB") # Remove alpha for saving in jpg format.
+    disp.image(img)
+
+# add qrcode to right corner
+    qr = qrcode.QRCode()
+#    qr.add_data(f"https://opensea.io/collection/{slug}")
+    qr.add_data(wallet)
+    qr.make()
+    imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+
+#it did say WIDTH,HEIGHT)
+    imgrender2 = imgrender.resize((120, 120))
+
+#check for bad link
+    try:
+        disp.image(imgrender2)
+#            time.sleep(0.25)            
+    except PIL.UnidentifiedImageError:
+        print("Bad Link/File")
+
+def showkey():
+
+    try:
+        wallet = apps_data[0][1]
+        secretkey = apps_data[0][2]
+
+    except IndexError:
+        print("Empty qrcode data")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+        im = Image.new("RGB", (240, 240), "red")
+        d = ImageDraw.Draw(im)
+        d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
+        d.text((120, 120), "No ethereum wallet", fill="black", anchor="ms", font=font)
+        d.text((120, 140), "are loaded yet", fill="black", anchor="ms", font=font)
+        d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
+        d.text((120, 180), "Turn on unit again", fill="black", anchor="ms", font=font)
+        d.text((120, 200), "when you are ready", fill="black", anchor="ms", font=font)
+        d.text((120, 220), "to scan a QRcode", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        time.sleep(20)
+        shut_down()
+
+    qr = qrcode.QRCode()
+    print(secretkey)
+    qr.add_data(secretkey)
+    qr.make()
+    imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+    imgrender2 = imgrender.resize((WIDTH, HEIGHT))
+#    disp.image(imgrender2)
+    d = ImageDraw.Draw(imgrender2)
+#split key in two
+    x = len(secretkey)
+    string1 = slice(0,len(secretkey)//2)
+    string2 = slice(len(secretkey)//2,len(secretkey))
+    d.text((1,1), str(secretkey[string1]),(200,15,20))
+    d.text((1,10), str(secretkey[string2]),(200,15,20))
+    d.text((30,225),'Be Extremely Careful Private Key',(200,15,20))
+    try:
+        disp.image(imgrender2)
+        time.sleep(0.25)            
+    except PIL.UnidentifiedImageError:
+        print("Bad Link/File")
+
+    time.sleep(20)
+    homescreen()
+
 
 button1 = Button(21)
 button2 = Button(20)
@@ -881,19 +677,11 @@ splash_screen()
 
 #check internet connection
 if internet() == False:
-#    response = requests.get(onelink)
-
-#except Exception:
     print("can't connect to internet:socket gaierror")
 
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
     im = Image.new("RGB", (240, 240), "blue")
     d = ImageDraw.Draw(im)
-#    d.line(((0, 120), (200, 120)), "gray")
-#    d.line(((120, 0), (120, 200)), "gray")
-#    art(im)
-#    d.text((120, 80), "___(°)~(°)_________", fill="black", anchor="ms", font=font)
-#    d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
     d.text((120, 120), "Lost internet Connection", fill="black", anchor="ms", font=font)
     d.text((120, 140), "Move to Another Area", fill="black", anchor="ms", font=font)
     d.text((120, 160), "of Room", fill="black", anchor="ms", font=font)
@@ -908,25 +696,16 @@ if internet() == False:
     print("Re-Connect:Auto Shutting Down in 2 minutes")
 
     if internet() == False:
-#        response = requests.get(onelink)
-#    except Exception:
         print("retry connect internet:can't connect to internet:socket gaierror")
 
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
         im = Image.new("RGB", (240, 240), "red")
         d = ImageDraw.Draw(im)
-#        d.line(((0, 120), (200, 120)), "gray")
-#        d.line(((120, 0), (120, 200)), "gray")
-#        art_checkers(im)
-#        d.text((120, 80), "___(°)~(°)_________", fill="black", anchor="ms", font=font)
         d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
         d.text((120, 120), "Retried internet, Still", fill="black", anchor="ms", font=font)
         d.text((120, 140), "No internet connected", fill="black", anchor="ms", font=font)
         d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
         d.text((120, 180), "now!", fill="black", anchor="ms", font=font)
-#        d.text((120, 200), "fasfd", fill="black", anchor="ms", font=font)
-#        d.text((120, 220), "n in 2mins", fill="black", anchor="ms", font=font)
-
 #       im = im.rotate()
         disp.image(im)
         time.sleep(30)
@@ -948,232 +727,22 @@ if internet() == False:
         while 1:
             time.sleep(1)
 
-#check if user needs onboarding/load NFTs
-#no_NFT()
-
-# Added default most recently added NFT as base NFT displayed (can increase splash screen time): rest of onboarding below functions
-#x = (len(apps_data) - 1)
-
-##try:
-##    onelink = apps_data[x][1]
-
-##except IndexError:
-##    print("Empty qrcode data")
-##    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-##    im = Image.new("RGB", (240, 240), "red")
-##    d = ImageDraw.Draw(im)
-#    art_checkers(im)
-
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-##    d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
-##    d.text((120, 120), "No QRcodes", fill="black", anchor="ms", font=font)
-##    d.text((120, 140), "are loaded yet", fill="black", anchor="ms", font=font)
-##    d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
-##    d.text((120, 180), "Turn on unit again", fill="black", anchor="ms", font=font)
-##    d.text((120, 200), "when you are ready", fill="black", anchor="ms", font=font)
-##    d.text((120, 220), "to scan a QRcode", fill="black", anchor="ms", font=font)
-##    disp.image(im)
-##    time.sleep(20)
-##    shut_down()
-
-##response = requests.get(onelink)
- 
-##image_bytes = io.BytesIO(response.content)
-#check for bad link
-##try:
-##    img = PIL.Image.open(image_bytes)
-##    resized_img = img.resize((WIDTH, HEIGHT))
-##    disp.image(resized_img)
-##    time.sleep(0.25)            
-##except PIL.UnidentifiedImageError:
-##    print("Bad Link/File")
-
-
-##Display Base Message
-
-try:
-
-    print("HomeScreen")
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-    im = Image.new("RGB", (240, 240), "Blue")
-    d = ImageDraw.Draw(im)
-#    art_checkers(im)
-
-#            d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-    d.text((120, 100), "Creature Key    ", fill="black", anchor="ms", font=font)
-    d.text((120, 120), "Press the Button", fill="black", anchor="ms", font=font)
-    d.text((120, 140), "to Receive", fill="black", anchor="ms", font=font)
-    d.text((120, 160), "", fill="black", anchor="ms", font=font)
-    d.text((120, 180), "", fill="black", anchor="ms", font=font)
-    d.text((120, 200), "", fill="black", anchor="ms", font=font)
-    d.text((120, 220), "", fill="black", anchor="ms", font=font)
-    disp.image(im)
-#    time.sleep(20)
-
-
-except PIL.UnidentifiedImageError:
-    print("Bad Link/File")
+#check if user needs onboarding
+no_NFT()
+homescreen()
 
 
 print("""
-Pick your Gan Punk
+Your ETH Wallet, Gan Punk
 """)
-
-class Frame:
-    def __init__(self, duration=0):
-        self.duration = duration
-        self.image = None
-
-class AnimatedGif(object):
-    def __init__(self, display, width=None, height=None, gif=None):
-        self.gif = gif
-        print(gif)
-        self._frame_count = 0
-        self._loop = 0
-#        self._index = 0
-        self._duration = 0
-#        self._gif_files = []
-        self._frames = []
-
-        if width is not None:
-            self._width = width
-        else:
-            self._width = display.width
-        if height is not None:
-            self._height = height
-        else:
-            self._height = display.height
-        self.display = display
-#        self.advance_button = buttonU.when_pressed
-#        self.back_button = init_button(BUTTON_PREVIOUS)
-#        self.run()
-#            if image.is_animated:
-#                self._gif_files.append(gif_file)
-
-#        print("Found", self._gif_files)
-#        if not self._gif_files:
-#            print("No Gif files found in current folder")
-#            exit()  # pylint: disable=consider-using-sys-exit
-
-    def preload(self):
-#        image = Image.open(self._gif_files[self._index])
-#        print(gif)
-        if internet():
-            response = requests.get(ganGIF)
-            image_bytes = io.BytesIO(response.content)
-            image = PIL.Image.open(image_bytes)
-#        print("Loading {}...".format(self._gif_files[self._index]))
-            print(image.info)
-
-            if "duration" in image.info:
-                self._duration = image.info["duration"]
-            else:
-                self._duration = 0
-            if "loop" in image.info:
-                self._loop = image.info["loop"]
-            else:
-                self._loop = 1
-            self._frame_count = image.n_frames
-            self._frames.clear()
-            for frame in range(self._frame_count):
-                image.seek(frame)
-            # Create blank image for drawing.
-            # Make sure to create image with mode 'RGB' for full color.
-                frame_object = Frame(duration=self._duration)
-                if "duration" in image.info:
-                    frame_object.duration = image.info["duration"]
-                frame_object.image = ImageOps.pad(  # pylint: disable=no-member
-                    image.convert("RGB"),
-                    (self._width, self._height),
-                    method=Image.NEAREST,
-                    color=(0, 0, 0),
-                    centering=(0.5, 0.5),
-                )
-                self._frames.append(frame_object)
-        else:
-            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-            im = Image.new("RGB", (240, 240), "red")
-            d = ImageDraw.Draw(im)
-#            art_checkers_fast(im)
-#        d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
-            d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
-            d.text((120, 120), "You are out", fill="black", anchor="ms", font=font)
-            d.text((120, 140), "of wifi range", fill="black", anchor="ms", font=font)
-            d.text((120, 160), "or wifi setup", fill="black", anchor="ms", font=font)
-            d.text((120, 180), "went wrong.", fill="black", anchor="ms", font=font)
-            d.text((120, 200), "Move closer to router", fill="black", anchor="ms", font=font)
-            d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
-
-#        im = im.rotate()
-            disp.image(im)
-            print("no internet available")
-            time.sleep(5)
-
-    def play(self):
-
-        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 24)
-        im = Image.new("RGB", (240, 240), "mediumseagreen")
-        d = ImageDraw.Draw(im)
-#        art_checkers(im)
-
-        d.text((120, 120), "Loading...", fill="black", anchor="ms", font=font)
-        d.text((120, 140), "GIF...", fill="black", anchor="ms", font=font)
-        disp.image(im)
-
-        self.preload()
-
-        # Check if we have loaded any files first
- #       if not self._gif_files:
- #           print("There are no Gif Images loaded to Play")
- #           return False
-        while True:
-            for frame_object in self._frames:
-                start_time = time.monotonic()
-                self.display.image(frame_object.image)
-#                if not self.advance_button.value:
-#                    self.advance()
-#                    return False
-                if buttonU.is_pressed:
-                     return False
-                     break
- #               if not self.back_button.value:
- #                   self.advance()
- #                   return False
- #               if not self.back_button.value:
- #                   self.back()
- #                   return False
-                while time.monotonic() < (start_time + frame_object.duration / 1000):
-                    pass
-
-            if self._loop == 1:
-                return True
-            if self._loop > 0:
-                self._loop -= 1
-
-#    def run(self):
-#        self.play()
-
-#AnimatedGIF(gif = 5
 
 try: 
 
     button1.when_pressed = shut_down
-#delete 1 nft/delete all nfts
     button2.when_pressed = push_button2
-#slideshow/scroll/safe button
     button3.when_pressed = push_button
     buttonL.when_pressed = flip_screen
-    buttonC.when_pressed = qr_capture
-    buttonD.when_pressed = reverse_scroll_NFT
-    gif_player = AnimatedGif(disp, width=WIDTH, height=HEIGHT, gif=5)
-#    buttonD.when_pressed = gif_player.play() 
-#gif_player = AnimatedGif(disp, width=WIDTH, height=HEIGHT, gif=5)
-#    buttonU.when_pressed = scroll_NFT
     pause()
-    
-
-
-
 
 
 finally:
