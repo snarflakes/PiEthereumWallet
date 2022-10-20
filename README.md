@@ -1,9 +1,9 @@
-# Raspberry Pi Ethereum (+L2's) Hardware Wallet with Uniswap cryptocurrency Exchange Button and ST7789 IPS Display:
+# Raspberry Pi Ethereum (+L2s) Hardware Wallet with Uniswap cryptocurrency Exchange Button and ST7789 IPS Display:
 
 For $30 (+ cost of microSD cards) you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
 
 Don't want the tax implications of sending your ETH?  Just send USDC. 
-Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH!
+Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
 
 PARTS: 
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
