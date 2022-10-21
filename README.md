@@ -1,4 +1,4 @@
-# Raspberry Pi Ethereum (+L2s) Hardware Wallet with Uniswap cryptocurrency Exchange Button and ST7789 IPS Display:
+# An Ethereum Hardware Wallet with decentralized token Swap and physically transferrable private key:
 
 For $30 (+ cost of microSD cards) you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
 
