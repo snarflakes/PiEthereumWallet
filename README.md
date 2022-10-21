@@ -11,8 +11,7 @@ ST screen: https://a.co/d/iT952LE
 microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50a2JCb
 battery pack (optional) - https://a.co/d/fKbBJRV
 
-![image](https://user-images.githubusercontent.com/75555569/196772201-acafc739-72cd-4259-87b0-9b90188de1ed.png)
-![image](https://user-images.githubusercontent.com/75555569/197246834-609f0db7-493a-44b6-934e-e567f3c6d047.png)
+![image](https://user-images.githubusercontent.com/75555569/197250955-77091a1b-181f-483f-8cbb-5ca03dbfb97c.png)
 
 Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap market variant!
 
