@@ -1,8 +1,10 @@
 # An Ethereum Hardware Wallet with decentralized token Swap and physically transferrable private key:
 
-For $30 (+ cost of microSD cards) you can make your own: Physically Transferrable MicroSDcard based cold ETH wallets! Load and gift small cold wallets to friends and family.
+Bringing the blockchain to physical life, using swappable private key containing microSD cards, clicky buttons, open source code, and a bright informative display, this device makes for a great way to educate others, onboard, build, and swap tokens.
 
-Don't want the tax implications of sending your ETH?  Just send USDC. 
+For $30 (+ cost of microSD cards) you can make your own! Load and gift small cold wallets to friends and family.
+
+Don't want the tax implications of sending your ETH?  Just send USDC + gas. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
 
 PART List: 
@@ -60,7 +62,7 @@ Copy the files from this repository onto the Pi, or clone using:
 
 ```````````
 cd ~
-git clone https://github.com/snarflakes/ethereumwallets.git
+git clone https://github.com/snarflakes/PiEthereumWallet.git
 cd ganpunks
 ```````````
 
@@ -79,7 +81,7 @@ sudo python3 polygonimage.py
 # Add as a service: How to have the EthereumWallet Program run whenever the Pi Boots Up 
 
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
-Follow these instructions: (make sure you set USER: root for both copies)
+Follow these instructions: (make sure you set USER: root for both copies!)
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
 
 # For extra security in public places? Make these mods to your OS.
