@@ -5,7 +5,7 @@ For $30 (+ cost of microSD cards) you can make your own: Physically Transferrabl
 Don't want the tax implications of sending your ETH?  Just send USDC. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
 
-PARTS: 
+PART List: 
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
 ST screen: https://a.co/d/iT952LE
 microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50a2JCb
