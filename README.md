@@ -1,11 +1,11 @@
-# An Ethereum Hardware Wallet with decentralized token Swap and physically transferrable private key:
+# A Decentralized Ethereum Hardware Wallet with contract direct token Swap and physically transferrable private key:
 
 Bringing the blockchain to physical life, using swappable private key containing microSD cards, clicky buttons, open source code, and a bright informative display, this device makes for a great way to educate others, onboard, build, and swap tokens.
 
 For $30 (+ cost of microSD cards) you can make your own! Load and gift small cold wallets to friends and family.
 
 Don't want the tax implications of sending your ETH?  Just send USDC + gas. 
-Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
+Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a contract direct uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
 
 PART List: 
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
