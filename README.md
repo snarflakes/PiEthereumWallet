@@ -9,6 +9,7 @@ Hand the hardware to your 💘 crypto noob/student/child, they press and hold th
 
 PART List: 
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
+(stock info) https://www.nowinstock.net/computers/developmentboards/raspberrypi/
 ST screen: https://a.co/d/iT952LE
 microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50a2JCb
 battery pack (optional) - https://a.co/d/fKbBJRV
