@@ -80,10 +80,10 @@ sudo python3 polygonimage.py
 `````````````
 
 
-# Add as a service: How to have the EthereumWallet Program run whenever the Pi Boots Up 
+# Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
-Follow these instructions: (make sure you set USER: root for both copies!)
+Follow these instructions: (make sure you set USER: root for both copies!). Also make sure you pick which wallet version file you want to auto-run on boot, image.py for L1, polygonimage.py for L2.
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
 
 # For extra security in public places? Make these mods to your OS.
