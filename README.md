@@ -17,7 +17,7 @@ battery pack (optional) - https://a.co/d/fKbBJRV
 
 ![image](https://user-images.githubusercontent.com/75555569/197250955-77091a1b-181f-483f-8cbb-5ca03dbfb97c.png)
 
-Available on ETH L1 or quickly convert code to any EVM based chain and its uniswap market variant!
+Available on ETH L1 and Polygon L2 and quickly convert tokens info or tokenswaps to any EVM based chain and its uniswap market variant!
 
 On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card (original should have saved wifi credentials prior to copying) and when you pop a new one in, it will generate a new wallet and be ready for onboarding and the recipient can walk away with a microSD card with their private key safely stored.
 
