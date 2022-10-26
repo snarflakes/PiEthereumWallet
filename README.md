@@ -89,3 +89,7 @@ https://www.raspberrypi.org/documentation/linux/usage/systemd.md
 # For extra security in public places? Make these mods to your OS.
 
 Change your user logon to be a very strong 10 digit password with symbol/upper/lowercase letter/numbers.  Also you can reduce the rate of incorrect authentication attempts with https://www.fail2ban.org/wiki/index.php/Main_Page
+
+# User Interface Button Flow
+![image](https://user-images.githubusercontent.com/75555569/198090532-17e9609d-88ae-4108-8191-7f67eef109f4.png)
+
