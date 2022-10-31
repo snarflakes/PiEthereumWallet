@@ -343,7 +343,7 @@ def transactions():
     TRANSPARENCY = .3  # Degree of transparency, 0-100%
     OPACITY = int(255 * TRANSPARENCY)
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-    img = Image.new("RGBA", (240, 240), "white")
+    img = Image.new("RGBA", (240, 240), "#8247e5")
     d = ImageDraw.Draw(img)
 
 #add in a image layer ontop of white background, way of eliminated transparent layer too
@@ -546,14 +546,14 @@ def homescreen():
     OPACITY = int(255 * TRANSPARENCY)
 
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf", 22)
-    img = Image.new("RGBA", (240, 240), "white")
+    img = Image.new("RGBA", (240, 240), "#8247e5")
     d = ImageDraw.Draw(img)
 
 #add in a image layer ontop of white background, way of eliminated transparent layer too
     picture_1 = Image.open("nftydaze4.jpg").convert('RGBA')
     image = picture_1.resize((50, 50))
     img.paste(image, (50, 50))
-    d.text((70, 110), "  ETH Wallet ", fill="black", anchor="ms", font=font)
+    d.text((70, 114), "       Polygon Wallet ", fill="black", anchor="ms", font=font, stroke_width=1, stroke_fill='white')
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf", 9)
     d.text((120, 20), wallet, fill="black", anchor="ms", font=font)
     disp.image(img)
@@ -599,7 +599,7 @@ def homescreen():
 #print('Contract Name: ', contract.functions.name().call())
     print('Symbol: ', token_declare.functions.symbol().call())
 
-    req = requests.get('https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=UHM6EST7PIJ9RIKCYVRSA1NEV1TFJB1PYQ')
+    req = requests.get('https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=4QJNI4RUC92ICJJFB4JWJT4YEG7MCUB95R')
     t = json.loads(req.content)
 
 #print(t)
