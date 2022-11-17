@@ -47,13 +47,23 @@ Make sure you have the following dependencies (modules):
 
 ````
 sudo apt-get update
+or
+sudo apt-get update --allow-releaseinfo-change
+
 sudo apt-get install python-rpi.gpio python-spidev python-pip python-pil python-numpy
+
+sudo apt-get -y install python3-pip
 ````
 
-Install this library by running:
+Install these libraries by running:
 
 ````
 sudo pip3 install st7789
+sudo pip3 install pillow
+sudo pip3 install board
+sudo pip3 install gpiozero
+sudo pip3 install adafruit-blinka
+sudo apt-get install libopenjp2-7
 ````
 
 Prerequisites
