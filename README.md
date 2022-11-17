@@ -39,6 +39,8 @@ OR if you want seemless wifi connectivity at every boot (best option)
 B) Homebridge Raspberry Pi Zero setup: add a server for easy wifi connection when traveling around to peoples houses. You need a wifi or mobile phone hotspot connection for the wallet to work.
 https://homebridge.io/raspberry-pi-image
 
+Use this disk imager to burn a copy of one of those operating system "images" onto a microSD card: https://sourceforge.net/projects/win32diskimager/
+
 after above completed steps proceed below. 
 
 Make sure you have the following dependencies (modules):
