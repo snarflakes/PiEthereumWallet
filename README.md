@@ -50,8 +50,6 @@ sudo apt-get update
 or
 sudo apt-get update --allow-releaseinfo-change
 
-sudo apt-get install python-rpi.gpio python-spidev python-pip python-pil python-numpy
-
 sudo apt-get -y install python3-pip
 ````
 
@@ -64,6 +62,17 @@ sudo pip3 install board
 sudo pip3 install gpiozero
 sudo pip3 install adafruit-blinka
 sudo apt-get install libopenjp2-7
+sudo pip3 install RPI.GPIO
+sudo apt-get install python3-numpy 
+sudo pip3 install adafruit-circuitpython-rgb-display
+sudo pip3 install qrcode
+sudo pip3 install web3
+sudo pip3 install uniswap-python
+sudo pip3 install spidev
+sudo raspberry-config
+(enable SPI in menu: go to interface options, go to SPI, enable SPI)
+sudo reboot now
+
 ````
 
 Prerequisites
@@ -77,7 +86,7 @@ Copy the files from this repository onto the Pi, or clone using:
 ```````````
 cd ~
 git clone https://github.com/snarflakes/PiEthereumWallet.git
-cd ganpunks
+cd PiEthereumWallet
 ```````````
 
 Run the ethereum L1 script using (must run as root):
