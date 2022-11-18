@@ -35,12 +35,9 @@ from PIL import Image, ImageDraw, ImageFont
 import adafruit_rgb_display.st7789 as st7789
 
 #qr code modules
-import cv2
 import numpy as np
-import pyzbar.pyzbar as pyzbar
 import argparse
 import datetime
-import imutils
 from csv import reader
 
 #check internet
@@ -62,14 +59,12 @@ from eth_account import Account
 import secrets
 from uniswap import Uniswap
 
-#connect web3
+#connect web3 host/node info
+#infura_url = 'https://mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
+#infura_url = 'https://eth-mainnet.g.alchemy.com/v2/e2Uyo6jgkqXVx0bYGSyR7XfABGh4xJYT'
 infura_url = 'https://mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
 #infura_url = 'https://goerli.infura.io/v3/6e3044367252450f96047f6e34833089' 
 web3 = Web3(Web3.HTTPProvider(infura_url))
-
-isConnected = web3.isConnected()
-blocknumber = web3.eth.blockNumber
-print('Connected: ', isConnected, 'BlockNumber: ', blocknumber)
 
 #Primary Token Pairs: token_address's and ETH(don't forget to set custom ABI if changing USDC to a new token) Token_address is the main displayed token on home screen (needs its own abi for proper wallet amount)
 #usdc token_address goerli
@@ -476,6 +471,11 @@ def transactions():
     except PIL.UnidentifiedImageError:
         print("Bad Link/File")
 
+#def polygon():
+
+#    from subprocess import Popen, PIPE
+#    process = Popen(['python3','polygonimage.py'], stdout=PIPE, stderr=PIPE)
+#    exit()
 
 def flip_screen():
     example_d[0], example_d[1] = example_d[1], example_d[0]
@@ -526,7 +526,7 @@ def homescreen():
     TRANSPARENCY = .3  # Degree of transparency, 0-100%
     OPACITY = int(255 * TRANSPARENCY)
 
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf", 22)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf", 22)
     img = Image.new("RGBA", (240, 240), "white")
     d = ImageDraw.Draw(img)
 
@@ -535,7 +535,7 @@ def homescreen():
     image = picture_1.resize((50, 50))
     img.paste(image, (50, 50))
     d.text((70, 110), "  ETH Wallet ", fill="black", anchor="ms", font=font)
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf", 9)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)
     d.text((120, 20), wallet, fill="black", anchor="ms", font=font)
     disp.image(img)
 
@@ -674,7 +674,6 @@ buttonC = Button(13)
 #start with splash
 splash_screen()
 
-
 #check internet connection
 if internet() == False:
     print("can't connect to internet:socket gaierror")
@@ -682,12 +681,13 @@ if internet() == False:
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
     im = Image.new("RGB", (240, 240), "blue")
     d = ImageDraw.Draw(im)
-    d.text((120, 120), "Lost internet Connection", fill="black", anchor="ms", font=font)
-    d.text((120, 140), "Move to Another Area", fill="black", anchor="ms", font=font)
-    d.text((120, 160), "of Room", fill="black", anchor="ms", font=font)
-    d.text((120, 180), "If Still Error", fill="black", anchor="ms", font=font)
-    d.text((120, 200), "Return to Staff", fill="black", anchor="ms", font=font)
-    d.text((120, 220), "", fill="black", anchor="ms", font=font)
+    d.text((120, 80), "No internet Connection", fill="black", anchor="ms", font=font)
+    d.text((120, 120), 'Re-Pair using Homebridge', fill='black', anchor='ms', font=font) 
+    d.text((120, 140), "(re-enter the wifi Psswrd)", fill="black", anchor="ms", font=font)
+    d.text((120, 160), "Or move closer to signal", fill="black", anchor="ms", font=font)
+    d.text((120, 180), "Or wait and device", fill="black", anchor="ms", font=font)
+    d.text((120, 200), "will shut down", fill="black", anchor="ms", font=font)
+    d.text((120, 220), "automatically", fill="black", anchor="ms", font=font)
 
 #       im = im.rotate()
     disp.image(im)
@@ -708,24 +708,41 @@ if internet() == False:
         d.text((120, 180), "now!", fill="black", anchor="ms", font=font)
 #       im = im.rotate()
         disp.image(im)
-        time.sleep(30)
-
+        time.sleep(10)
 
         #Shutdown display screen Splash
         image = Image.open('nftydaze4.jpg')
         image = image.resize((WIDTH, HEIGHT))
         print('Drawing image')
         disp.image(image)
-
         time.sleep(5)
         img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
         draw = ImageDraw.Draw(img)
         disp.image(img)
         time.sleep(0.25)
-
         os.system("sudo shutdown -h now")
         while 1:
             time.sleep(1)
+
+if internet():
+    isConnected = web3.isConnected()
+    blocknumber = web3.eth.blockNumber
+    print('Connected: ', isConnected, 'BlockNumber: ', blocknumber)
+
+else:
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+    im = Image.new("RGB", (240, 240), "red")
+    d = ImageDraw.Draw(im)
+    d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
+    d.text((120, 120), "You are out", fill="black", anchor="ms", font=font)
+    d.text((120, 140), "of wifi range", fill="black", anchor="ms", font=font)
+    d.text((120, 160), "or wifi setup", fill="black", anchor="ms", font=font)
+    d.text((120, 180), "went wrong.", fill="black", anchor="ms", font=font)
+    d.text((120, 200), "Move closer to router", fill="black", anchor="ms", font=font)
+    d.text((120, 220), "__________________", fill="black", anchor="ms", font=font)
+#        im = im.rotate()
+    disp.image(im)
+    print("no internet available")
 
 #check if user needs onboarding
 no_NFT()
@@ -742,6 +759,7 @@ try:
     button2.when_pressed = push_button2
     button3.when_pressed = push_button
     buttonL.when_pressed = flip_screen
+#    buttonR.when_pressed = polygon
     pause()
 
 
