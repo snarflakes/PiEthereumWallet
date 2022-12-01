@@ -28,6 +28,7 @@ Plus there are a ton more buttons available to come up with your own essential w
 ✅ wallet watcher with custom alerts to phone?
 ✅ gas price watcher with alerts?
 
+Device Demonstration Videos including Private Key Management can be viewed here: https://www.youtube.com/channel/UCEF_x9fTZcyoEAE-GllaJ8w
 
 # Installation
 
