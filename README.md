@@ -112,6 +112,10 @@ https://domoticproject.com/creating-raspberry-pi-service/
 
 Change your user logon to be a very strong 10 digit password with symbol/upper/lowercase letter/numbers.  Also you can reduce the rate of incorrect authentication attempts with https://www.fail2ban.org/wiki/index.php/Main_Page
 
+# Want more Privacy (hide your IP address)?
+
+Install free opensource software WireguardVPN by following instructions here: https://pivpn.io/
+
 # User Interface Button Flow
 ![image](https://user-images.githubusercontent.com/75555569/198363554-f76feb38-99e4-48f4-a357-6e68d5ae0b8b.png)
 
