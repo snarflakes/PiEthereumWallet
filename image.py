@@ -635,23 +635,47 @@ def showkey():
         time.sleep(20)
         shut_down()
 
-    qr = qrcode.QRCode()
-    print(secretkey)
-    qr.add_data(secretkey)
-    qr.make()
-    imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
-    imgrender2 = imgrender.resize((WIDTH, HEIGHT))
-#    disp.image(imgrender2)
-    d = ImageDraw.Draw(imgrender2)
-#split key in two
+    im = Image.new("RGB", (240, 240), (0,0,0))
+    d = ImageDraw.Draw(im)
+    unicode = u"\uE233"
     x = len(secretkey)
+#split key in two
     string1 = slice(0,len(secretkey)//2)
     string2 = slice(len(secretkey)//2,len(secretkey))
     d.text((1,1), str(secretkey[string1]),(200,15,20))
     d.text((1,10), str(secretkey[string2]),(200,15,20))
+    d.text((1,140),'Private Key',(200,15,20))
+    d.text((180,110),'App Stores',(200,15,20))
+    disp.image(im)
+
+#private key qrcode
+    qr = qrcode.QRCode()
+    print(secretkey)
+    qr.add_data(secretkey)
+    qr.make()
+
+    imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+    imgrender2 = imgrender.resize((120,120))
+    im.paste(imgrender2, (0,20))
+#    imgrender2.paste
+
+#    disp.image(imgrender2)
+##    d = ImageDraw.Draw(imgrender2)
+
+#second qrcode link to wallet phone apps
+    qr = qrcode.QRCode()
+    applinks = "https://linktr.ee/piethereumwallet"
+    print(applinks)
+    qr.add_data(applinks)
+    qr.make()
+
+    imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+    imgrender3 = imgrender.resize((120,120))
+    im.paste(imgrender3, (120,120))
     d.text((30,225),'Be Extremely Careful Private Key',(200,15,20))
+
     try:
-        disp.image(imgrender2)
+        disp.image(im)
         time.sleep(0.25)            
     except PIL.UnidentifiedImageError:
         print("Bad Link/File")
