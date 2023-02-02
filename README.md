@@ -14,7 +14,7 @@ raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberr
 ST screen: https://a.co/d/iT952LE
 microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50a2JCb
 battery pack (optional) - https://a.co/d/fKbBJRV
-
+camera module (optional) - https://www.google.com/search?q=raspberry+pi+zero+camera+module&rlz=1C1GCEB_enUS914US914&sxsrf=AJOqlzWnq7qabwB9Vqkt6qN3C8JVxgmUMQ%3A1675300861854&ei=_Q_bY-XRM5SoqtsPl--jUA&ved=0ahUKEwilxIyG1vX8AhUUlGoFHZf3CAoQ4dUDCBA&uact=5&oq=raspberry+pi+zero+camera+module&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQkQIyBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBAgAEB4yBAgAEB4yCQgAEAgQHhDxBDIGCAAQCBAeMgUIABCGAzIFCAAQhgM6BAgAEEc6CggAEEcQ1gQQsAM6BwgAELADEEM6DQgAEOQCENYEELADGAE6DwguEOUEEMgDELADEEMYAjoSCC4Q5QQQ1AIQyAMQsAMQQxgCOgcIIxCwAhAnOg0ILhANEIAEEOUEENQCOgcIABANEIAEOgoILhANEIAEEOUEOg0ILhANENQCEIAEEOUEOggIABAIEAcQHkoECEEYAEoECEYYAVDLBliMD2DhEGgBcAJ4AIAB5wGIAf0EkgEFMi4yLjGYAQCgAQHIARPAAQHaAQYIARABGAnaAQYIAhABGAg&sclient=gws-wiz-serp
 ![image](https://user-images.githubusercontent.com/75555569/198359213-da0b4a9d-303e-4461-a70e-165fd8b24b97.png)
 
 Available on ETH L1 and Polygon L2 and quickly convert tokens info or tokenswaps to any EVM based chain and its uniswap market variant!
