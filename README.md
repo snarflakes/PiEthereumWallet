@@ -121,7 +121,7 @@ Install free opensource software WireguardVPN by following instructions here: ht
 ![image](https://user-images.githubusercontent.com/75555569/198363554-f76feb38-99e4-48f4-a357-6e68d5ae0b8b.png)
 
 
-# WalletConnect + Camera Enable Option
+# WalletConnect + Camera Enable Option Installation Instructions
 ````
 [camera first]
 sudo apt-get install python3-opencv
@@ -132,6 +132,7 @@ sudo raspi-config
 
 [walletconnect function]
 sudo apt-get install libssl-dev
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 pip install cryptography
 python3 -m pip install pyWalletConnect
 
