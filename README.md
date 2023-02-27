@@ -120,6 +120,26 @@ Install free opensource software WireguardVPN by following instructions here: ht
 # User Interface Button Flow
 ![image](https://user-images.githubusercontent.com/75555569/198363554-f76feb38-99e4-48f4-a357-6e68d5ae0b8b.png)
 
-# WalletConnect Enable?
-Additional instructions coming soon!
 
+# WalletConnect + Camera Enable Option
+````
+[camera first]
+sudo apt-get install python3-opencv
+sudo apt-get install libqt4-test python3-sip python3-pyqt5 libqtgui4 libjasper-dev libatlas-base-dev -y
+
+##TURN ON CAMERA navigate through accessories on menu- 
+sudo raspi-config
+
+[walletconnect function]
+sudo apt-get install libssl-dev
+pip install cryptography
+python3 -m pip install pyWalletConnect
+
+#Take Note Difficulty with installing cryptography module as "sudo", so script has to run through user because sudo doesn't have access
+practice from command line: 
+sudo -E python3 imageid.py
+
+#work around for sudo -E (when running myscript) see below
+added sys.path directions directly into the file so it would point to the location installed under the pi user
+(all directories need to be listed, if additional modules are found in subfolders those folders need to be named)
+````
