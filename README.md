@@ -133,7 +133,10 @@ sudo raspi-config
 [walletconnect function]
 sudo apt-get install libssl-dev
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+python3 -m pip install wsproto==1.0.0
 pip install cryptography
+(or)
+sudo apt install python3-cryptography
 python3 -m pip install pyWalletConnect
 
 #Take Note Difficulty with installing cryptography module as "sudo", so script has to run through user because sudo doesn't have access
