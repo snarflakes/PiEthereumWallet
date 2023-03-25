@@ -68,6 +68,7 @@ from eth_account import Account
 import secrets
 from uniswap import Uniswap
 from web3.middleware import geth_poa_middleware
+from web3.middleware import construct_sign_and_send_raw_middleware
 
 #walletconnect
 from logging import basicConfig, DEBUG
@@ -81,6 +82,7 @@ from siwe import SiweMessage
 from eth_account.messages import encode_defunct
 from web3.auto import w3
 from eth_account import messages
+from eth_account.messages import encode_structured_data
 
 #connect web3 host/node info
 #infura_url = 'https://mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
@@ -211,7 +213,8 @@ def refresh():
 
         qr = qrcode.QRCode()
         if example_d[0] ==137:
-            qr.add_data(f"https://polygonscan.com/address/{(apps_data[0][1])}")
+            print("hello")
+#            qr.add_data(f"https://polygonscan.com/address/{(apps_data[0][1])}")
         else:
             qr.add_data(f"https://etherscan.io/address/{(apps_data[0][1])}")
 #    qr.add_data(wallet)
@@ -730,7 +733,11 @@ def showkey():
         print("Bad Link/File")
 
     time.sleep(20)
-    homescreen()
+
+    if example_d[0] ==137:
+        homescreenpoly()
+    else:
+        homescreen()
 
 camera_on = False
 def qr_capture():
@@ -875,12 +882,15 @@ def qr_capture():
                                 parameters = read_data[2]
                                 print(type(parameters))
                                 print(parameters)
-                                print("message to sign")
-                                print(parameters[0])
-                                parameters = parameters[0]
-                                print(type(parameters))
-
                                 if "personal_sign" == method:
+                                    print("message to sign")
+                                    print(parameters[0])
+                                    print("type")
+                                    print(type(parameters[0]))
+
+                                    parameters = parameters[0]
+                                    print(type(parameters))
+#                                   remove 0x from message to sign
                                     parameters = parameters[2:]
                                     print(parameters)
                                     print('convert from string to signature type')
@@ -897,7 +907,6 @@ def qr_capture():
                                     result = signed_message.signature.hex()
                     
                                     print(result)
-                                    print(type(result))
                                     print(type(result))
                                     print(result)
                                     wclient.reply(id_request, result)
@@ -945,20 +954,120 @@ def qr_capture():
 
                                     break
                                 if "eth_sendTransaction" == method:
+                                    if example_d[0] ==137:
+                                        result = sendtransactionpoly(parameters)
+                                        wclient.reply(id_request, result)
+#                    wclient.reply_session_request(session_data[0], wallet_chain_id, wallet_address)
+#                                     wallet_dapp.reply(call_id, result)
+
+
                                     print("logging user out, sendTransaction attempted")
 #                                    cap.release()
 #                                    cv2.destroyAllWindows()
                                     break
 
                                 if "eth_signTypedData" == method:
-                                    print("logging user out, sendTransaction attempted")
+
+                                    parameters = parameters[1]
+                                    print(type(parameters))
+
+#                                    parameters = parameters[2:]
+                                    print(parameters)
+                                    print("load json")
+                                    parameters = json.loads(parameters)
+                                    print(type(parameters))
+                                    print(parameters)
+
+#first working strategy
+#                                    parameters['domain']['chainId'] = int(parameters['domain']['chainId'])
+#                                    print(type(parameters['domain']['chainId']))
+
+#                                    print("value issue")
+#                                    print(parameters['message']['value'])
+#                                    print(type(parameters['message']['value']))
+#                                    parameters['message']['value'] = int(parameters['message']['value'])
+
+#                                    print("message data issue")
+#                                    print(parameters['message']['data']) 
+#                                    print(type(parameters['message']['data'])) 
+#                                    parameters['message']['data'] = bytes(parameters['message']['data'], 'utf-8') 
+#                                    print(type(parameters['message']['data'])) 
+
+#                                    print("operation data issue")
+#                                    print(parameters['message']['operation']) 
+#                                    print(type(parameters['message']['operation'])) 
+#                                    parameters['message']['operation'] = int(parameters['message']['operation']) 
+#                                    print(type(parameters['message']['operation'])) 
+
+#                                    print("operation data issue")
+#                                    print(parameters['message']['safeTxGas']) 
+#                                    parameters['message']['safeTxGas'] = int(parameters['message']['safeTxGas']) 
+#                                    print(type(parameters['message']['safeTxGas'])) 
+
+#                                    parameters['message']['baseGas'] = int(parameters['message']['baseGas']) 
+#                                    parameters['message']['gasPrice'] = int(parameters['message']['gasPrice']) 
+#                                    parameters['message']['nonce'] = int(parameters['message']['nonce']) 
+
+
+#                                    message_json = json.dumps(parameters, separators=(',', ':')).encode('utf-8')
+
+
+#new PR strategy
+#                                    signInfo = TypedDataConvert(parameters['data']['domain'], parameters['data']['types'], parameters['data']['value'])
+                                    signInfo = TypedDataConvert(parameters['domain'], parameters['types'], parameters['message'])
+
+                                    message = encode_structured_data(signInfo)
+
+
+                                    print("eth_signTypedData")
+#                                    message = messages.encode_structured_data(primitive=parameters)
+                                    print(message)
+                                    print(type(message))
+                                    signed_message = Account.sign_message(message, private_key=secretkey)
+                                    print(signed_message)
+#                                    print(parameters[0])
+                                    result = signed_message.signature.hex()
+                    
+                                    print(result)
+                                    print(type(result))
+                                    print(result)
+                                    wclient.reply(id_request, result)
+
+                    
+                                    print("verify signature: address should match")
+#                                    message = messages.encode_structured_data(parameters)
+#                                    print(w3.eth.account.recover_message(message, signature=result))
+                                    
+#                                    if (w3.eth.account.recover_message(message, signature=result)) == wallet_address:
+                                    
+#                                        print("Signature Completed or Logged In")
+#                                        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+#                                        img = Image.new("RGB", (240, 240), "black")
+#
+#                                        draw = ImageDraw.Draw(img)  # Create a context for drawing things on it.
+#                                        draw.rounded_rectangle(((10, 50), (230, 190)), fill="lime", outline="black", width=0, radius=25)
+#                                        disp.image(img)
+
+#                                        d = ImageDraw.Draw(img)
+#                                        d.text((120, 80), "   (°)~(°)_________", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 100), "Signature Made", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 120), "with", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 140), "the", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 160), "DAPP", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 180), "...", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 200), "..", fill="black", anchor="ms", font=font)
+#                                        d.text((120, 220), ".", fill="black", anchor="ms", font=font)
+#                                        disp.image(img)
+#                                        time.sleep(5)
+
+                                    print("logging user out, ETHsignedTypedData attempted")
 #method of signing for EPNS/pushapp
 #                                    cap.release()
 #                                    cv2.destroyAllWindows()
-                                    break
+#                                    break
 
                                 if "wallet_switchEthereumChain" == method:
-                                    print("logging user out, sendTransaction attempted")
+                                    print("logging user out, switchEthereumChain attempted")
 #                                    cap.release()
 #                                    cv2.destroyAllWindows()
                                     break
@@ -1194,7 +1303,168 @@ def homescreenpoly():
     except PIL.UnidentifiedImageError:
         print("Bad Link/File")
 
+def sendtransactionpoly(parameters):
+    secretkey = apps_data[0][2]
+    infura_url = 'https://polygon-mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
+    w3 = Web3(Web3.HTTPProvider(infura_url))
+#    web3 = Web3(Web3.HTTPProvider(infura_url))
+#Primary Token Pairs: token_address's and ETH(don't forget to set custom ABI if changing USDC to a new token) Token_address is the main displayed token on home screen (needs its own abi for proper wallet amount)
+#usdc token_address goerli
+#token_address = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F'
+#token_address ETH mainnet
+#token_address = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+#token_address USDC polygon
+    token_address = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
+    weth = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
+    wmatic = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
 
+    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+    isConnected = w3.isConnected()
+    blocknumber = w3.eth.blockNumber
+    print('Connected: ', isConnected, 'BlockNumber: ', blocknumber)
+
+    print(parameters)
+    parameters = parameters[0]
+    print('resave as parameters[0] to turn into dict')
+    print(type(parameters))
+#current wallet
+    fromaddress = w3.toChecksumAddress(parameters['from'])
+#gnosis safe contract
+    newtoaddress = w3.toChecksumAddress(parameters['to'])
+
+    w3.middleware_onion.add(construct_sign_and_send_raw_middleware(secretkey))
+
+    sendamount = w3.eth.send_transaction({
+        'to': newtoaddress,
+        'from': fromaddress,
+#        'value': web3.toWei(0.001, "ether")
+        'data': parameters['data']
+    })
+    print("signtransaction")
+    print(w3.toHex(sendamount))
+    return w3.toHex(sendamount)
+
+
+
+def _fixInt(v):
+    if type(v) == str:
+        base = 16 if '0x' in v else 10
+        return int(v, base)
+    elif type(v) == int:
+        return v
+    return None
+
+
+def _fixByte(v):
+    if type(v) == str and len(v) % 2 == 0:
+        newValue = v
+        if '0x' in v:
+            newValue = newValue.replace('0x', '')
+        return bytes.fromhex(newValue)
+    elif type(v) == list:
+        testList = [0 <= _v <= 255 for _v in v]
+        if all(testList):
+            return bytes(v)
+    return None
+
+
+def _fix(v, tp, types):
+    isArray = '[' in tp and ']' in tp
+    if isArray:
+        tp = tp[:tp.index('[')]
+    if tp in ['uint8', 'uint16', 'uint32', 'uint64', 'uint128', 'uint256', 'uint512', 'int8', 'int16', 'int32', 'int64',
+              'int128', 'int256', 'int512']:
+        if isArray:
+            r = []
+            for i, _ in enumerate(v):
+                newV = _fixInt(v[i])
+                if newV is not None:
+                    r.append(newV)
+                else:
+                    return None
+            return r
+        else:
+            return _fixInt(v)
+
+    elif tp in ['bytes1', 'bytes32', 'bytes']:
+        if isArray:
+            r = []
+            for i, _ in enumerate(v):
+                newV = _fixByte(v[i])
+                if newV is not None:
+                    r.append(newV)
+                else:
+                    return None
+            return r
+        else:
+            return _fixByte(v)
+    elif tp == 'address':
+        return v
+    elif tp == 'string':
+        return v
+    else:  # custom type
+        if not (tp in types):
+            return None
+        newTypes = types[tp]
+        if isArray:
+            r = []
+            for i, _ in enumerate(v):
+                newV = {}
+                for tInfo in newTypes:
+                    key = tInfo['name']
+                    tp = tInfo['type']
+                    newV[key] = _fix(v[i][key], tp, types)
+                r.append(newV)
+            return r
+        else:
+            newV = {}
+            for tInfo in newTypes:
+                key = tInfo['name']
+                tp = tInfo['type']
+                newV[key] = _fix(v[key], tp, types)
+            return newV
+
+
+def _getPrimaryType(types: dict, values: dict):
+    primaryType = ''
+    for typeKey in types:
+        vTypes = types[typeKey]
+        ok = True
+        for vType in vTypes:
+            if vType['name'] not in values:
+                ok = False
+                break
+        if ok:
+            primaryType = typeKey
+            break
+    if primaryType == '':
+        return None
+    return primaryType
+
+
+def TypedDataConvert(domain: dict, types: dict, values: dict):
+    EIP712DomainMap = {
+        'name': {'name': 'name', 'type': 'string'},
+        'version': {'name': 'version', 'type': 'string'},
+        'chainId': {'name': 'chainId', 'type': 'uint256'},
+        'verifyingContract': {'name': 'verifyingContract', 'type': 'address'},
+        'salt': {'name': 'salt', 'type': 'bytes32'},
+    }
+    primaryType = _getPrimaryType(types, values)
+    newValue = _fix(values.copy(), primaryType, types)
+    EIP712Domain = []
+    for domainKey in domain:
+        EIP712Domain.append(EIP712DomainMap[domainKey])
+    newTypes = types.copy()
+    newTypes['EIP712Domain'] = EIP712Domain
+    newDomain = _fix(domain, 'EIP712Domain', newTypes)
+    completedStruct = {
+        "types": newTypes,
+        "domain": newDomain,
+        "message": newValue,
+        "primaryType": primaryType,
+    }
+    return completedStruct
 
 
 
