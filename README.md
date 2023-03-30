@@ -122,7 +122,7 @@ Install free opensource software WireguardVPN by following instructions here: ht
 ![image](https://user-images.githubusercontent.com/75555569/198363554-f76feb38-99e4-48f4-a357-6e68d5ae0b8b.png)
 
 
-# WalletConnect + Camera Enable Option Installation Instructions
+# WalletConnect/Safe.Global Optional Installation Instructions
 ````
 [camera first]
 sudo apt-get install python3-opencv
