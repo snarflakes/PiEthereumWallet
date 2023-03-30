@@ -1,4 +1,4 @@
-# A Permissionless Self-Banking (Ethereum) and Currency Trading Device
+# A Permissionless Self-Banking (Ethereum),Currency Trading via Uniswapv3 Device. Safe.Global MultiSig enabled
 A Decentralized Ethereum Hardware Wallet (Raspberry Pi inside) with contract direct token Swap and physically transferrable private key.
 
 Bringing the blockchain to physical life, using swappable private key containing microSD cards, clicky buttons, open source code, and a bright informative display, this device makes for a great way to educate others, onboard, build, and swap tokens. Super easy build! no coding experience needed!
@@ -7,6 +7,7 @@ For $30 (+ cost of microSD cards) you can make your own! Load and gift small col
 
 Don't want the tax implications of sending your ETH?  Just send USDC + gas. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a contract direct uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
+Are you a DAO member tasked with signing via a Safe.Global multisig? Take advantage of the always visible notification bar to alert you when a transaction needs signing!
 
 PART List: 
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
@@ -130,7 +131,7 @@ sudo apt-get install libqt4-test python3-sip python3-pyqt5 libqtgui4 libjasper-d
 ##TURN ON CAMERA navigate through accessories on menu- 
 sudo raspi-config
 
-[walletconnect function] imageid.py (only pushes through personal sign) and imageidopen.py (pushes through all transactions and signatures without "warning" user interface) 
+[walletconnect function] imageid.py (only pushes through personal sign) and imageidopen.py (pushes through all transactions and signatures without "warning" user interface) imageidopensafe.py (includes imageidopen AND notification bar alerting users of the presence of a multisig safe transaction needing signing)
 sudo apt-get install libssl-dev
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 python3 -m pip install wsproto==1.0.0
