@@ -20,7 +20,7 @@ microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50
 battery pack (optional) - https://a.co/d/fKbBJRV
 Want WalletConnect?: camera module (optional) -https://a.co/d/3tTFnJs
 
-![image](https://user-images.githubusercontent.com/75555569/198359213-da0b4a9d-303e-4461-a70e-165fd8b24b97.png)
+![image](https://nftydaze.com/wp-content/uploads/2023/04/IMG-1435.jpg)
 
 Available on ETH L1 and Polygon L2 and quickly convert tokens info or tokenswaps to any EVM based chain and its uniswap market variant!
 
