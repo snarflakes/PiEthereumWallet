@@ -105,7 +105,11 @@ Run the polygon L2 script using (must run as root):
 `````````````
 sudo python3 polygonimage.py
 `````````````
+Run the arbitrum L2 script using (must run as root):
 
+`````````````
+sudo python3 arbitrumimage.py
+`````````````
 
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
