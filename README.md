@@ -157,18 +157,27 @@ added sys.path directions directly into the file so it would point to the locati
 ````
 
 # Launch 3 types of Walletconnect PiEthereum Wallet
-Run the WalletConnect Wallet with ONLY auto-signed "personal_sign" transactiosn (auto-signs the simplest safer transactions) script (must run as root):
+Run the WalletConnect Wallet with ONLY auto-signed "personal_sign" transactions (auto-signs the simplest safer transactions) script (must run as root):
 
 `````````````
 sudo -E python3 imageid.py
+
+myscript autostart line:
+ExecStart=/usr/bin/python3 -u imageid.py
 `````````````
 Run the WalletConnect Wallet with all signatures auto-signed (be careful as any transaction you agree to will be auto signed with no confirmation (must run as root):
 
 `````````````
 sudo -E python3 imageidopen.py
+
+myscript autostart line:
+ExecStart=/usr/bin/python3 -u imageidopen.py
 `````````````
 Run the WalletConnect Wallet with all signatures auto-signed + special Safe.Global multisig pending transaction notification bar (must run as root):
 
 `````````````
 sudo -E python3 imageidopensafe.py
+
+myscript autostart line:
+ExecStart=/usr/bin/python3 -u imageidopensafe.py
 `````````````
