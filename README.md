@@ -155,3 +155,20 @@ sudo -E python3 imageid.py
 added sys.path directions directly into the file so it would point to the location installed under the pi user
 (all directories need to be listed, if additional modules are found in subfolders those folders need to be named)
 ````
+
+# Launch 3 types of Walletconnect PiEthereum Wallet
+Run the WalletConnect Wallet with ONLY auto-signed "personal_sign" transactiosn (auto-signs the simplest safer transactions) script (must run as root):
+
+`````````````
+sudo -E python3 imageid.py
+`````````````
+Run the WalletConnect Wallet with all signatures auto-signed (be careful as any transaction you agree to will be auto signed with no confirmation (must run as root):
+
+`````````````
+sudo -E python3 imageidopen.py
+`````````````
+Run the WalletConnect Wallet with all signatures auto-signed + special Safe.Global multisig pending transaction notification bar (must run as root):
+
+`````````````
+sudo -E python3 imageidopensafe.py
+`````````````
