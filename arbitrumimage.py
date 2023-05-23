@@ -63,7 +63,7 @@ from web3.middleware import geth_poa_middleware
 #connect web3
 #infura_url = 'https://mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
 #infura_url = 'https://goerli.infura.io/v3/6e3044367252450f96047f6e34833089' 
-infura_url = 'https://arbitrum-mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
+infura_url = 'https://arbitrum-mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
 w3 = Web3(Web3.HTTPProvider(infura_url))
 web3 = Web3(Web3.HTTPProvider(infura_url))
 #w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -107,7 +107,8 @@ disp = st7789.ST7789(
     spi,
     height=240,
     y_offset=80,
-    rotation=example_d[0],
+#    rotation=example_d[0],
+    rotation=180,
     cs=cs_pin,
     dc=dc_pin,
     rst=reset_pin,
@@ -810,7 +811,7 @@ try:
     button1.when_pressed = shut_down
     button2.when_pressed = push_button2
     button3.when_pressed = push_button
-    buttonL.when_pressed = flip_screen
+#    buttonL.when_pressed = flip_screen
     pause()
 
 
