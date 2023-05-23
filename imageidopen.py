@@ -87,7 +87,8 @@ from eth_account.messages import encode_structured_data
 #connect web3 host/node info
 #infura_url = 'https://mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
 #infura_url = 'https://eth-mainnet.g.alchemy.com/v2/e2Uyo6jgkqXVx0bYGSyR7XfABGh4xJYT'
-infura_url = 'https://mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
+infura_url = 'https://mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
+infura_url_poly = 'https://polygon-mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
 #infura_url = 'https://goerli.infura.io/v3/6e3044367252450f96047f6e34833089' 
 web3 = Web3(Web3.HTTPProvider(infura_url))
 
@@ -1160,9 +1161,9 @@ def homescreenpoly():
 #might need to move higher so variables are known
     print("Home PolyWallet Screen")
 #might need to move higher so variables are known
-    infura_url = 'https://polygon-mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
-    w3 = Web3(Web3.HTTPProvider(infura_url))
-    web3 = Web3(Web3.HTTPProvider(infura_url))
+#    infura_url = 'https://polygon-mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
+    w3 = Web3(Web3.HTTPProvider(infura_url_poly))
+    web3 = Web3(Web3.HTTPProvider(infura_url_poly))
 #w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 #isConnected = web3.isConnected()
@@ -1305,8 +1306,8 @@ def homescreenpoly():
 
 def sendtransactionpoly(parameters):
     secretkey = apps_data[0][2]
-    infura_url = 'https://polygon-mainnet.infura.io/v3/6e3044367252450f96047f6e34833089'
-    w3 = Web3(Web3.HTTPProvider(infura_url))
+#    infura_url = 'https://polygon-mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
+    w3 = Web3(Web3.HTTPProvider(infura_url_poly))
 #    web3 = Web3(Web3.HTTPProvider(infura_url))
 #Primary Token Pairs: token_address's and ETH(don't forget to set custom ABI if changing USDC to a new token) Token_address is the main displayed token on home screen (needs its own abi for proper wallet amount)
 #usdc token_address goerli
