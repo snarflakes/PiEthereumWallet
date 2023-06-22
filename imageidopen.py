@@ -4,10 +4,12 @@
 #Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, 
 #under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights. 
 
+
 import csv
 import os
 import sys
 import logging
+from logging import getLogger
 import requests
 import io
 import PIL
@@ -83,6 +85,8 @@ from eth_account.messages import encode_defunct
 from web3.auto import w3
 from eth_account import messages
 from eth_account.messages import encode_structured_data
+
+logger = getLogger(__name__)
 
 #connect web3 host/node info
 #infura_url = 'https://mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
@@ -879,10 +883,24 @@ def qr_capture():
                                 print(id_request)
                 
                                 method = read_data[1]
+                                print("v1 or v2 data report")
                                 print(method)
                                 parameters = read_data[2]
                                 print(type(parameters))
                                 print(parameters)
+
+                                #WalletConnect v2 processing
+                                if method == "wc_sessionRequest" or method == "wc_sessionPayload":
+                         # Read if WCv2 and extract to v1 format
+                                    logger.debug("WCv2 request")
+                                    if parameters.get("request"):
+                                        logger.debug("request decoding")
+                                        method = parameters["request"].get("method")
+                                        parameters = parameters["request"].get("params")
+                                        logger.debug("Actual method: %s, params: %s", method, parameters)
+
+
+
                                 if "personal_sign" == method:
                                     print("message to sign")
                                     print(parameters[0])
@@ -942,13 +960,21 @@ def qr_capture():
 
     #                                    break 
 
-                                
+                                if method == "wc_sessionUpdate":
+                                    if parameters[0].get("approved") is False:
+#                                        raise Exception("Disconnected by the web app service.")
+                                        break
+                                if method == "wc_sessionDelete":
+                                    if parameters.get("reason"):
+#                                        raise Exception("Disconnected by the web app service.\n" f"Reason : {parameters['reason']['message']}")
+                                        break
+
+                                    if parameters.get("message"):
+#                                        raise Exception("Disconnected by the web app service.\n" f"Reason : {parameters['message']}")
+                                        break
                                 # Detect quit
                                 #  v1 disconnect
-                                if (
-                                    read_data[1] == "wc_sessionUpdate"
-                                    and read_data[2][0]["approved"] == False
-                                ):
+                                if (read_data[1] == "wc_sessionUpdate" and read_data[2][0]["approved"] == False):
                                     print("User disconnects from Dapp (WC v1).")
 #                                    cap.release()
 #                                    cv2.destroyAllWindows()
