@@ -86,10 +86,12 @@ from eth_account import messages
 logger = getLogger(__name__)
 
 #connect web3 host/node info
-#infura_url = 'https://mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
+infura_url = 'https://mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
 #infura_url = 'https://eth-mainnet.g.alchemy.com/v2/e2Uyo6jgkqXVx0bYGSyR7XfABGh4xJYT'
-infura_url = 'https://mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
-infura_url_poly = 'https://polygon-mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
+#infura_url = 'https://mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
+#infura_url_poly = 'https://polygon-mainnet.infura.io/v3/de98810e949943d19f7b1096b9181325'
+infura_url_poly = 'https://polygon-mainnet.infura.io/v3/aead12b7af1947b19f1b1d9b00d7b9b8'
+
 #infura_url = 'https://goerli.infura.io/v3/6e3044367252450f96047f6e34833089' 
 web3 = Web3(Web3.HTTPProvider(infura_url))
 
