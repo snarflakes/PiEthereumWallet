@@ -310,6 +310,32 @@ def no_NFT():
             print("shutting down")
             shutdown()
 
+def push_button3():
+    start_time=time.time()
+    hold_time = 2
+    diff=0
+
+    while button1.is_active and (diff <hold_time) :
+        now_time=time.time()
+        diff=-start_time+now_time
+
+    if diff < hold_time :
+        print("Displaying Reverse Transaction Confirmation")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
+        im = Image.new("RGB", (240, 240), (223, 255, 0))
+        d = ImageDraw.Draw(im)
+        d.text((120, 90), "Confirm Reverse Swap?", fill="black", anchor="ms", font=font)
+        d.text((120, 110), config.L2_output_name + " to " + config.L2_token_name, fill="black", anchor="ms", font=font)
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 12)
+        d.text((120, 200), "Hold Button to Confirm", fill="black", anchor="ms", font=font)
+        d.text((120, 220), "Tap Middle Button to Cancel", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        print("Confirmation screen displayed")
+
+    else:
+        transactions_flip()
+
+
 def push_button2():
     start_time=time.time()
     hold_time = 4
@@ -320,12 +346,10 @@ def push_button2():
         diff=-start_time+now_time
 
     if diff < hold_time :
-        print("login")
-        qr_capture()
+        refresh()
+
     else:
-        flip_screen()
-#        print("show private key")
-#        showkey()
+        shut_down()
 
 
 def push_button():
@@ -338,7 +362,19 @@ def push_button():
         diff=-start_time+now_time
 
     if diff < hold_time :
-        refresh()
+
+        print("Displaying Transaction Confirmation")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
+        im = Image.new("RGB", (240, 240), (223, 255, 0))
+        d = ImageDraw.Draw(im)
+        d.text((120, 90), "Confirm Swap?", fill="black", anchor="ms", font=font)
+        d.text((120, 110), config.L2_token_name + " to " + config.L2_output_name, fill="black", anchor="ms", font=font)
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 12)
+        d.text((120, 200), "Hold Button to Confirm", fill="black", anchor="ms", font=font)
+        d.text((120, 220), "Tap Middle Button to Cancel", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        print("Confirmation screen displayed")
+
 
     else:
         transactions()
@@ -524,7 +560,7 @@ def transactions():
         d.text((50, 195), "QRcode->", fill="black", anchor="ms", font=font)
 
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
-        d.text((60, 235), "Press Button to Refresh", fill="black", anchor="ms", font=font)
+        d.text((60, 235), "Press Middle Button to Refresh", fill="black", anchor="ms", font=font)
 
 # Alpha composite these two images together to obtain the desired result.
         img = Image.alpha_composite(img, overlay)
@@ -664,11 +700,332 @@ def transactions():
         except PIL.UnidentifiedImageError:
             print("Bad Link/File")
 
-#def polygon():
+def transactions_flip():
+    print("opposite flip here")
 
-#    from subprocess import Popen, PIPE
-#    process = Popen(['python3','polygonimage.py'], stdout=PIPE, stderr=PIPE)
-#    exit()
+
+
+    print("transaction opposite flip button pressed")
+    if internet():
+        print("internet")
+        
+    else:
+       print("no internet available")
+
+    try:
+        wallet = apps_data[0][1]
+        secretkey = apps_data[0][2]
+
+    except IndexError:
+        print("Empty data")
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+        im = Image.new("RGB", (240, 240), "red")
+        d = ImageDraw.Draw(im)
+        d.text((120, 100), "User:    ", fill="black", anchor="rs", font=font)
+        d.text((120, 120), "No ethereum wallet", fill="black", anchor="ms", font=font)
+        d.text((120, 140), "are loaded yet", fill="black", anchor="ms", font=font)
+        d.text((120, 160), "Shutting Down", fill="black", anchor="ms", font=font)
+        d.text((120, 180), "Turn on unit again", fill="black", anchor="ms", font=font)
+        d.text((120, 200), "when you are ready", fill="black", anchor="ms", font=font)
+        d.text((120, 220), "to scan a QRcode", fill="black", anchor="ms", font=font)
+        disp.image(im)
+        time.sleep(20)
+        shut_down()
+
+#transparency for boxes(gas costs?)
+    TINT_COLOR = (0, 0, 0)  # Black
+    TRANSPARENCY = .3  # Degree of transparency, 0-100%
+    OPACITY = int(255 * TRANSPARENCY)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
+    img = Image.new("RGBA", (240, 240), "white")
+    d = ImageDraw.Draw(img)
+
+#add in a image layer ontop of white background, way of eliminated transparent layer too
+    picture_1 = Image.open("nftydaze4.jpg").convert('RGBA')
+    image = picture_1.resize((50, 50))
+    img.paste(image, (50, 50))
+
+    if example_d[0] != 1:
+        d.text((80, 100), config.L2_output_name + "->" + config.L2_token_name, fill="black", anchor="ms", font=font)
+    else:
+        d.text((80, 100), config.L1_output_name + "->" + config.eth_token_name, fill="black", anchor="ms", font=font)
+
+    d.text((84, 120), "  Transaction Sent...", fill="black", anchor="ms", font=font)
+    disp.image(img)
+
+#run different function that just generates blank screen with name on it
+
+# Make a blank image the same size as the image for the rectangle, initialized
+# to a fully transparent (0% opaque) version of the tint color, then draw a
+# semi-transparent version of the square on it.
+    overlay = Image.new('RGBA', img.size, TINT_COLOR+(0,))
+    draw = ImageDraw.Draw(overlay)  # Create a context for drawing things on it.
+#    draw.rectangle(((10, 200), (100, 240)), fill=TINT_COLOR+(OPACITY,))
+    draw.rounded_rectangle(((10, 140), (100, 220)), fill=TINT_COLOR+(OPACITY,), outline="black", width=1, radius=3)
+
+#draw.rounded_rectangle((50, 50, 150, 150), fill="blue", outline="yellow", width=3, radius=7)
+
+#write on screen and pull up Ethereum account value
+    acct = Account.from_key(secretkey)
+    print(acct)
+    print("Address:", acct.address)
+    print(wallet)
+    time.sleep(0.25)
+
+#transaction sequence for L2 token swap
+    if example_d[0] != 1:
+        w3 = Web3(Web3.HTTPProvider(config.infura_url_L2))
+        web3 = Web3(Web3.HTTPProvider(config.infura_url_L2))
+        w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+# print current MATIC or gas token account value, and begin polygon or L2 token swap
+        balance = web3.eth.getBalance(acct.address)
+        print('Account Balance gas token or matic: ', (web3.fromWei(balance, 'Ether')))
+
+# print current ETH account value
+# wETH ABI in order to print amount of wETH present
+#	    abi_eth = json.loads('[{"inputs":[{"internalType":"address","name":"childChainManager","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"userAddress","type":"address"},{"indexed":false,"internalType":"address payable","name":"relayerAddress","type":"address"},{"indexed":false,"internalType":"bytes","name":"functionSignature","type":"bytes"}],"name":"MetaTransactionExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"CHILD_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"CHILD_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEPOSITOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ERC712_VERSION","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bytes","name":"depositData","type":"bytes"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"},{"internalType":"bytes","name":"functionSignature","type":"bytes"},{"internalType":"bytes32","name":"sigR","type":"bytes32"},{"internalType":"bytes32","name":"sigS","type":"bytes32"},{"internalType":"uint8","name":"sigV","type":"uint8"}],"name":"executeMetaTransaction","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getChainId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getDomainSeperator","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getNonce","outputs":[{"internalType":"uint256","name":"nonce","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]') 
+        eth_contract = web3.eth.contract(address=config.L2_weth_address, abi=config.L2_weth_contractABI) # declaring the token contract
+        ethtoken_balance = eth_contract.functions.balanceOf(acct.address).call() # returns int with balance, without decimals
+#need to put .call() at the end to call the smart contract #ALSO need to convert supply to Wei which is 6-18 decimal places)
+        print('wETHTokenBalance: ', ethtoken_balance/config.L2_token_decimal_output)
+
+
+# USDC ABI in order to print amount of USDC present
+#	    abi = json.loads('[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"authorizer","type":"address"},{"indexed":true,"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"AuthorizationCanceled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"authorizer","type":"address"},{"indexed":true,"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"AuthorizationUsed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_account","type":"address"}],"name":"Blacklisted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newBlacklister","type":"address"}],"name":"BlacklisterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newMasterMinter","type":"address"}],"name":"MasterMinterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"minter","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"minter","type":"address"},{"indexed":false,"internalType":"uint256","name":"minterAllowedAmount","type":"uint256"}],"name":"MinterConfigured","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldMinter","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":false,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"PauserChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newRescuer","type":"address"}],"name":"RescuerChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_account","type":"address"}],"name":"UnBlacklisted","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"inputs":[],"name":"CANCEL_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"RECEIVE_WITH_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TRANSFER_WITH_AUTHORIZATION_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"authorizer","type":"address"},{"internalType":"bytes32","name":"nonce","type":"bytes32"}],"name":"authorizationState","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"blacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"blacklister","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"authorizer","type":"address"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"cancelAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"},{"internalType":"uint256","name":"minterAllowedAmount","type":"uint256"}],"name":"configureMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currency","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"decrement","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"increment","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"tokenName","type":"string"},{"internalType":"string","name":"tokenSymbol","type":"string"},{"internalType":"string","name":"tokenCurrency","type":"string"},{"internalType":"uint8","name":"tokenDecimals","type":"uint8"},{"internalType":"address","name":"newMasterMinter","type":"address"},{"internalType":"address","name":"newPauser","type":"address"},{"internalType":"address","name":"newBlacklister","type":"address"},{"internalType":"address","name":"newOwner","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"newName","type":"string"}],"name":"initializeV2","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"lostAndFound","type":"address"}],"name":"initializeV2_1","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"isBlacklisted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"masterMinter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"}],"name":"minterAllowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pauser","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"validAfter","type":"uint256"},{"internalType":"uint256","name":"validBefore","type":"uint256"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"receiveWithAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter","type":"address"}],"name":"removeMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"rescueERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rescuer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"validAfter","type":"uint256"},{"internalType":"uint256","name":"validBefore","type":"uint256"},{"internalType":"bytes32","name":"nonce","type":"bytes32"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"transferWithAuthorization","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"unBlacklist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newBlacklister","type":"address"}],"name":"updateBlacklister","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newMasterMinter","type":"address"}],"name":"updateMasterMinter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newPauser","type":"address"}],"name":"updatePauser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newRescuer","type":"address"}],"name":"updateRescuer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]')
+
+#Specific Token desired for displaying amount to terminal
+#    token_address = '0x07865c6E87B9F70255377e024ace6630C1Eaa37F'
+        token_contract = web3.eth.contract(address=config.L2_token_address, abi=config.L2_token_contractABI) # declaring the token contract
+        token_balance = token_contract.functions.balanceOf(acct.address).call() # returns int with balance, without decimals
+        print('tokenbalance without dividing(converting to Wei):', token_balance)
+#need to put .call() at the end to call the smart contract #ALSO need to convert supply to Wei which is 6-18 decimal places)
+        print('TokenBalance: ', token_balance/config.L2_token_decimal)
+#print('Contract Name: ', contract.functions.name().call())
+        print('Symbol: ', token_contract.functions.symbol().call())
+
+## eliminate unnecessary gas terminal print out
+##        req = requests.get(config.api_L2_scan)
+##        t = json.loads(req.content)
+
+#print(t)
+##        print('SafeGasPrice', t['result']['SafeGasPrice'])
+##        print('ProposeGasPrice', t['result']['ProposeGasPrice'])
+##        print('FastGasPrice', t['result']['FastGasPrice'])
+
+##        gas = t['result']['FastGasPrice']
+##        print(type(gas))
+##        print(gas)
+
+# define the sender address and prints the balance (in ETH)
+        balance = web3.eth.get_balance(wallet)
+        print("This address has:", web3.fromWei(balance, "ether"), "gas token or MATIC")
+
+##################check for presence of USDC or defined token_address token
+##flipped here
+        if ethtoken_balance == 0:
+            print("Insufficient " + config.L2_output_name + " for transaction to be performed")
+            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+            im = Image.new("RGB", (240, 240), "orange")
+            d = ImageDraw.Draw(im)
+            d.text((120, 100), "Insufficient Funds", fill="black", anchor="ms", font=font)
+            d.text((120, 120), "for Transaction:", fill="black", anchor="ms", font=font)
+            d.text((120, 160), config.L2_token_name + " amount is 0", fill="black", anchor="ms", font=font)
+            d.text((120, 180), "Recheck " + config.L2_token_name + " present", fill="black", anchor="ms", font=font)
+            disp.image(im)
+            time.sleep(10)
+            w3.middleware_onion.remove(geth_poa_middleware)
+            homescreenL2()
+            return
+
+#############################################################################################transaction
+#Swap using uniswap-python module/ address's pulled at top of this function
+        version = 3                       # specify which version of Uniswap to use
+        uniswap = Uniswap(address=wallet, private_key=secretkey, version=version, provider=config.infura_url_L2, web3=w3)
+
+#Terminal Display of swap quote
+        print("1 usdc or token value in eth")
+
+##flipped here
+        price = (uniswap.get_price_input(config.L2_weth_address, config.L2_token_address, config.L2_token_decimal_output, fee=500)/ config.L2_token_decimal)
+
+        print('%.08f' % price)
+
+#Actual Swap Code need different "1*10**6" depending on specific token, most are defined as this 1*10**18
+##flipped here
+        try:
+            if config.L2_token_name == "ETH":
+                print("using up all ETH, but uniswap python leaves behind some ETH i guess overestimating gas costs")
+#                token_balance = token_balance - .000001
+            tx_hash = uniswap.make_trade(config.L2_weth_address, config.L2_token_address, ethtoken_balance, fee=500)
+            print("token swap tx sent")
+            print(web3.toHex(tx_hash))
+            time.sleep(3)
+        except ValueError:
+            print("Insufficient funds for swap transaction")
+            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+            im = Image.new("RGB", (240, 240), "orange")
+            d = ImageDraw.Draw(im)
+            d.text((120, 100), "Failed Transaction", fill="black", anchor="ms", font=font)
+            d.text((120, 120), "Insufficient Gas Funds", fill="black", anchor="ms", font=font)
+            d.text((120, 140), "for Swap Transaction:", fill="black", anchor="ms", font=font)
+            d.text((120, 160), "Recheck ETH amount(for gas)", fill="black", anchor="ms", font=font)
+#        im = im.rotate()
+            disp.image(im)
+            time.sleep(20)
+            w3.middleware_onion.remove(geth_poa_middleware)
+
+            homescreenL2()
+            return
+
+#draw token values
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+#        im = Image.new("RGB", (150, 50))
+        d = ImageDraw.Draw(overlay)                
+        d.text((50, 175), " Tx Status in", fill="black", anchor="ms", font=font)
+        d.text((50, 195), "QRcode->", fill="black", anchor="ms", font=font)
+
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
+        d.text((60, 235), "Press Middle Button to Refresh", fill="black", anchor="ms", font=font)
+
+# Alpha composite these two images together to obtain the desired result.
+        img = Image.alpha_composite(img, overlay)
+        img = img.convert("RGB") # Remove alpha for saving in jpg format.
+        disp.image(img)
+
+# add qrcode to right corner
+        qr = qrcode.QRCode()
+#        qr.add_data(f"https://polygonscan.com/tx/{web3.toHex(tx_hash)}")
+        qr.add_data(f"{config.L2_chain_explorer}tx/{web3.toHex(tx_hash)}")
+
+#    qr.add_data(wallet)
+        qr.make()
+        imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+
+#it did say WIDTH,HEIGHT)
+        imgrender2 = imgrender.resize((120, 120))
+        w3.middleware_onion.remove(geth_poa_middleware)
+
+#check for bad link
+        try:
+            disp.image(imgrender2)
+#            time.sleep(0.25)            
+        except PIL.UnidentifiedImageError:
+            print("Bad Link/File")
+
+########didn't flip yet######################
+# ETH TRANSACTION/print current ETH account value/ sequence for doing transaction on ETH L1 chain instead of polygon
+    else:
+        w3 = Web3(Web3.HTTPProvider(config.infura_url_eth))
+        web3 = Web3(Web3.HTTPProvider(config.infura_url_eth))
+
+        balance = web3.eth.getBalance(acct.address)
+        print('Account Balance: ', (web3.fromWei(balance, 'Ether')))
+
+#Specific Token desired for displaying amount to terminal
+        token_contract = web3.eth.contract(address=config.eth_token_address, abi=config.eth_token_contractABI) # declaring the token contract
+        token_balance = token_contract.functions.balanceOf(acct.address).call() # returns int with balance, without decimals
+
+#need to put .call() at the end to call the smart contract #ALSO need to convert supply to Wei which is 6-18 decimal places)
+        print('TokenBalance: ', token_balance/config.eth_token_decimal)
+#print('Contract Name: ', contract.functions.name().call())
+        print('Symbol: ', token_contract.functions.symbol().call())
+
+        req = requests.get(config.api_etherscan)
+        t = json.loads(req.content)
+
+#print(t)
+        print('SafeGasPrice', t['result']['SafeGasPrice'])
+        print('ProposeGasPrice', t['result']['ProposeGasPrice'])
+        print('FastGasPrice', t['result']['FastGasPrice'])
+
+        gas = t['result']['FastGasPrice']
+        print(type(gas))
+        print(gas)
+
+# define the sender address and prints the balance (in ETH)
+        balance = web3.eth.get_balance(wallet)
+        print("This address has:", web3.fromWei(balance, "ether"), "ETH")
+
+##################check for presence of USDC or defined token_address token
+        if token_balance == 0:
+            print("Insufficient" + config.eth_token_name  + " for transaction to be performed")
+            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+            im = Image.new("RGB", (240, 240), "orange")
+            d = ImageDraw.Draw(im)
+            d.text((120, 100), "Insufficient Funds", fill="black", anchor="ms", font=font)
+            d.text((120, 120), "for Transaction:", fill="black", anchor="ms", font=font)
+            d.text((120, 160), config.eth_token_name + " amount is 0", fill="black", anchor="ms", font=font)
+            d.text((120, 180), "Recheck " + config.eth_token_name + " present", fill="black", anchor="ms", font=font)
+            disp.image(im)
+            time.sleep(10)
+            homescreen()
+            return
+
+#############################################################################################transaction
+#Swap using uniswap-python module/ address's pulled at top of this function
+        version = 3                       # specify which version of Uniswap to use
+        uniswap = Uniswap(address=wallet, private_key=secretkey, version=version, provider=config.infura_url_eth)
+
+#Terminal Display of swap quote
+        print("1 token or usdc value in eth")
+#    print(uniswap.get_price_input(token_address, eth, 10**6, fee=500))
+        price = (uniswap.get_price_input(config.eth_token_address, eth, config.eth_token_decimal, fee=500)/ config.eth_token_decimal_output)
+        print('%.08f' % price)
+
+#Actual Swap Code need different "1*10**6" depending on specific token, most are defined as this 1*10**18
+        try:
+            tx_hash = uniswap.make_trade(config.eth_token_address, eth, token_balance, fee=500)
+            print(config.eth_token_name + " to ETH tx sent")
+            print(web3.toHex(tx_hash))
+            time.sleep(3)
+        except ValueError:
+            print("Insufficient funds for swap transaction")
+            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+            im = Image.new("RGB", (240, 240), "orange")
+            d = ImageDraw.Draw(im)
+            d.text((120, 100), "Failed Transaction", fill="black", anchor="ms", font=font)
+            d.text((120, 120), "Insufficient Gas Funds", fill="black", anchor="ms", font=font)
+            d.text((120, 140), "for Swap Transaction:", fill="black", anchor="ms", font=font)
+            d.text((120, 160), "Recheck ETH amount(for gas)", fill="black", anchor="ms", font=font)
+#        im = im.rotate()
+            disp.image(im)
+            time.sleep(20)
+            homescreen()
+            return
+
+#draw token values
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+#        im = Image.new("RGB", (150, 50))
+        d = ImageDraw.Draw(overlay)                
+        d.text((50, 175), " Tx Status in", fill="black", anchor="ms", font=font)
+        d.text((50, 195), "QRcode->", fill="black", anchor="ms", font=font)
+
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
+        d.text((60, 235), "Press Button to Refresh", fill="black", anchor="ms", font=font)
+
+# Alpha composite these two images together to obtain the desired result.
+        img = Image.alpha_composite(img, overlay)
+        img = img.convert("RGB") # Remove alpha for saving in jpg format.
+        disp.image(img)
+
+# add qrcode to right corner
+        qr = qrcode.QRCode()
+        qr.add_data(f"https://etherscan.io/tx/{web3.toHex(tx_hash)}")
+#    qr.add_data(wallet)
+        qr.make()
+        imgrender = qr.make_image(fill_color="black", back_color="#FAF9F6")
+
+#it did say WIDTH,HEIGHT)
+        imgrender2 = imgrender.resize((120, 120))
+
+#check for bad link
+        try:
+            disp.image(imgrender2)
+#            time.sleep(0.25)            
+        except PIL.UnidentifiedImageError:
+            print("Bad Link/File")
+
+
 
 def flip_screen():
     example_d[0], example_d[1] = example_d[1], example_d[0]
@@ -696,11 +1053,6 @@ def flip_screen():
         homescreenL2()
     else:
         homescreen()
-#    img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
-#    draw = ImageDraw.Draw(img)
-#    disp.image(img)
-#    time.sleep(0.25)
-#    os.system("sudo systemctl restart myscript.service")
 
 def homescreen():
 #might need to move higher so variables are known
@@ -1268,8 +1620,9 @@ def homescreenL2():
     OPACITY = int(255 * TRANSPARENCY)
 
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf", 22)
+
     if config.L2_chainid == "137":
-        brand = "#8247e5" 
+        brand = "#8247e5"
     elif config.L2_chainid == "10":
         brand = "red"
     elif config.L2_chainid == "42161":
@@ -1277,9 +1630,8 @@ def homescreenL2():
     else:
         brand = "white"
 
-#    img = Image.new("RGBA", (240, 240), "#8247e5")
-    img = Image.new("RGBA", (240, 240), brand)
 
+    img = Image.new("RGBA", (240, 240), brand)
     d = ImageDraw.Draw(img)
 
 #add in a image layer ontop of white background, way of eliminated transparent layer too
@@ -1524,7 +1876,7 @@ Your ETH Wallet, Gan Punk
 
 try: 
 
-    button1.when_pressed = shut_down
+    button1.when_pressed = push_button3
     button2.when_pressed = push_button2
     button3.when_pressed = push_button
     buttonL.when_pressed = showkey
