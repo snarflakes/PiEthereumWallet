@@ -106,11 +106,6 @@ Run the polygon L2 script using (must run as root):
 `````````````
 sudo python3 polygonimage.py
 `````````````
-Run the arbitrum L2 script using (must run as root):
-
-`````````````
-sudo python3 arbitrumimage.py
-`````````````
 
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
@@ -162,6 +157,7 @@ Run the WalletConnect Wallet with ONLY auto-signed "personal_sign" transactions 
 
 `````````````
 sudo -E python3 imageid.py
+or sudo -E python3 daytraderbuttons.py
 
 myscript autostart line:
 ExecStart=/usr/bin/python3 -u imageid.py
