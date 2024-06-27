@@ -2,7 +2,7 @@
 A Decentralized Ethereum Hardware Wallet (Raspberry Pi inside) with contract direct token Swap and physically transferrable private key.
 
 Warning: NOT AUDITED. Do not use to store substantial quantities of funds. 
-**I had to deactivate the included infura API as it was being spammed. Please generate your own free infura API number via the infura or alchemy websites and replace it in the code at the beginning (infura_url + infura_url_poly variables). While you are at it, generate your own etherscan API, and polygon scan API, and any other L2 blockchain explorer API and replace those in the code. Sorry spammer's make things harder for everyone!
+**I had to deactivate the included infura API as it was being spammed. Please generate your own free infura API number via the infura or alchemy websites and replace it in the config.json code. While you are at it, generate your own etherscan API, and polygon scan API, and any other L2 blockchain explorer API and replace those in the code. Sorry spammer's make things harder for everyone!
 
 Device Demonstration Videos including Private Key Management can be viewed here: https://www.youtube.com/channel/UCEF_x9fTZcyoEAE-GllaJ8w
 
