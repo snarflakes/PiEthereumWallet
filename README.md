@@ -107,6 +107,13 @@ Run the polygon L2 script using (must run as root):
 sudo python3 polygonimage.py
 `````````````
 
+Want to easily customize token swapping function? 
+Run the L2 tokenswapper script using (must run as root): Change all the variables to customize the token you want to swap and the L2 EVM chain of your choice @ config.json file.
+
+`````````````
+sudo -E python3 daytraderbuttons.py
+`````````````
+
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
