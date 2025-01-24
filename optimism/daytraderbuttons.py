@@ -846,7 +846,7 @@ def transactions_flip():
         print("1 usdc or token value in eth")
 
 ##flipped here
-        price = (uniswap.get_price_input(config.L2_weth_address, config.L2_token_address, config.L2_token_decimal_output, fee=500)/ config.L2_token_decimal)
+        price = (uniswap.get_price_input(config.L2_weth_address, config.L2_token_address, config.L2_token_decimal_output, fee=config.L2_poolfee)/ config.L2_token_decimal)
 
         print('%.08f' % price)
 
@@ -856,7 +856,7 @@ def transactions_flip():
             if config.L2_token_name == "ETH":
                 print("using up all ETH, but uniswap python leaves behind some ETH i guess overestimating gas costs")
 #                token_balance = token_balance - .000001
-            tx_hash = uniswap.make_trade(config.L2_weth_address, config.L2_token_address, ethtoken_balance, fee=500)
+            tx_hash = uniswap.make_trade(config.L2_weth_address, config.L2_token_address, ethtoken_balance, fee=config.L2_poolfee)
             print("token swap tx sent")
             print(web3.toHex(tx_hash))
             time.sleep(3)
@@ -969,12 +969,12 @@ def transactions_flip():
 #Terminal Display of swap quote
         print("1 token or usdc value in eth")
 #    print(uniswap.get_price_input(token_address, eth, 10**6, fee=500))
-        price = (uniswap.get_price_input(config.eth_token_address, eth, config.eth_token_decimal, fee=500)/ config.eth_token_decimal_output)
+        price = (uniswap.get_price_input(config.eth_token_address, eth, config.eth_token_decimal, fee=config.eth_poolfee)/ config.eth_token_decimal_output)
         print('%.08f' % price)
 
 #Actual Swap Code need different "1*10**6" depending on specific token, most are defined as this 1*10**18
         try:
-            tx_hash = uniswap.make_trade(config.eth_token_address, eth, token_balance, fee=500)
+            tx_hash = uniswap.make_trade(config.eth_token_address, eth, token_balance, fee=config.eth_poolfee)
             print(config.eth_token_name + " to ETH tx sent")
             print(web3.toHex(tx_hash))
             time.sleep(3)
