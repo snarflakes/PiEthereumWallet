@@ -1,18 +1,14 @@
-# A Permissionless Self-Banking (Ethereum),Currency Trading Device. Safe.Global MultiSig enabled
-A Decentralized Ethereum Hardware Wallet (Raspberry Pi inside) with contract direct token Swap and physically transferrable private key.
+#  PiSwap L2. Physical Keys, Click Button Swaps, Open Source
 
-Warning: NOT AUDITED. Do not use to store substantial quantities of funds. 
-**I had to deactivate the included infura API as it was being spammed. Please generate your own free infura API number via the infura or alchemy websites and replace it in the config.json code. While you are at it, generate your own etherscan API, and polygon scan API, and any other L2 blockchain explorer API and replace those in the code. Sorry spammer's make things harder for everyone!
+An Ethereum/EVM/L2 Hardware Wallet (Raspberry Pi inside) with multi-L2 chain contract direct token Swap and physically hot-swappable private keys.
+NOT AUDITED. Do not use to store substantial quantities of funds. 
 
-Device Demonstration Videos including Private Key Management can be viewed here: https://www.youtube.com/channel/UCEF_x9fTZcyoEAE-GllaJ8w
-
-Bringing the blockchain to physical life, using swappable private key containing microSD cards, clicky buttons, open source code, and a bright informative display, this device makes for a great way to educate others, onboard, build, and swap tokens. Super easy build! no coding experience needed!
+Bringing the blockchain to physical life, using swappable private keys inside microSD cards, clicky buttons, open source code, and a bright informative display, this device makes for a great way to educate others, onboard, build, and swap tokens. No coding experience needed!
+Old Device Demonstration Videos including Private Key Management can be viewed here: https://www.youtube.com/channel/UCEF_x9fTZcyoEAE-GllaJ8w
 
 For $30 (+ cost of microSD cards) you can make your own! Load and gift small cold wallets to friends and family.
-
 Don't want the tax implications of sending your ETH?  Just send USDC + gas. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a contract direct uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
-Are you a DAO member tasked with signing via a Safe.Global multisig? Take advantage of the always visible notification bar to alert you when a transaction needs signing!
 
 PART List: 
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
@@ -24,13 +20,9 @@ Want WalletConnect?: camera module (optional) -https://a.co/d/3tTFnJs
 
 ![image](https://nftydaze.com/wp-content/uploads/2023/04/IMG-1435.jpg)
 
-Available on ETH L1 and Polygon L2 and quickly convert tokens info or tokenswaps to any EVM based chain and its uniswap market variant!
-
-On device start, a ETH wallet will be created and saved as a .csv file called ETHEREUMWALLET.csv in the boot drive. Wallet address and private key will be easily viewable in that file on any computer with a microSD card adapter. If you want to onboard a bunch of people, just bring copies of your preloaded microSD card (original should have saved wifi credentials prior to copying) and when you pop a new one in, it will generate a new wallet and be ready for onboarding and the recipient can walk away with a microSD card with their private key safely stored.
-
 Plus there are a ton more buttons available to come up with your own essential wallet interactions!
 
-✅ digital signature?
+✅ account signing?
 ✅ send an ETH transaction out?
 ✅ wallet watcher with custom alerts to phone?
 ✅ gas price watcher with alerts?
@@ -87,6 +79,8 @@ Prerequisites
 
 If you are running the Pi headless, connect to your Raspberry Pi using ssh.
 
+**I had to deactivate the included infura API as it was being spammed. Please generate your own free infura API number via the infura or alchemy websites and replace it in all the config.json file code. While you are at it, generate your own etherscan API, and polygon scan API, and any other L2 blockchain explorer API and replace those in the code. 
+
 Install & Run
 Copy the files from this repository onto the Pi, or clone using:
 
@@ -96,23 +90,20 @@ git clone https://github.com/snarflakes/PiEthereumWallet.git
 cd PiEthereumWallet
 ```````````
 
-Run the ethereum L1 script using (must run as root):
+# Application Details
+
+Run the PiSwapL2.py (must run as root):
 
 `````````````
-sudo python3 image.py
-`````````````
-Run the polygon L2 script using (must run as root):
-
-`````````````
-sudo python3 polygonimage.py
+sudo python3 piswapL2.py
 `````````````
 
-Want to easily customize token swapping function? 
-Run the L2 tokenswapper script using (must run as root): Change all the variables to customize the token you want to swap and the L2 EVM chain of your choice @ config.json file.
+Want to easily customize token swapping function? Any token pair from uniswapV3 will work! 
+Edit config.json file in each "L2 chain" directory.  Make sure you update the infura API, token in and token out names, symbol, contract address, decimal place, API, and pool fee (ie 100, 300). Want more token pairs available? Add more config.jsons to the chain directory.  config2.json, config3.json, config4.json etc.
 
-`````````````
-sudo -E python3 daytraderbuttons.py
-`````````````
+# User Interface Menu Flow
+
+![IMG_5963](https://github.com/user-attachments/assets/8df36b67-a583-497c-b559-e5e7b92dd86b)
 
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
@@ -127,10 +118,6 @@ Change your user logon to be a very strong 10 digit password with symbol/upper/l
 # Want more Privacy (hide your IP address)?
 
 Install free opensource software WireguardVPN by following instructions here: https://pivpn.io/
-
-# User Interface Button Flow
-![image](https://user-images.githubusercontent.com/75555569/198363554-f76feb38-99e4-48f4-a357-6e68d5ae0b8b.png)
-
 
 # WalletConnect/Safe.Global Optional Installation Instructions
 ````
@@ -157,31 +144,8 @@ sudo -E python3 imageid.py
 #work around for sudo -E (when running myscript) see below
 added sys.path directions directly into the file so it would point to the location installed under the pi user
 (all directories need to be listed, if additional modules are found in subfolders those folders need to be named)
-````
-
-# Launch 3 types of Walletconnect PiEthereum Wallet
-Run the WalletConnect Wallet with ONLY auto-signed "personal_sign" transactions (auto-signs the simplest safer transactions) script (must run as root):
 
 `````````````
-sudo -E python3 imageid.py
-or sudo -E python3 daytraderbuttons.py
+Caution when running WalletConnect Wallet all signatures are auto-signed (be careful as any transaction you agree to will be auto signed with no confirmation
 
-myscript autostart line:
-ExecStart=/usr/bin/python3 -u imageid.py
-`````````````
-Run the WalletConnect Wallet with all signatures auto-signed (be careful as any transaction you agree to will be auto signed with no confirmation (must run as root):
-
-`````````````
-sudo -E python3 imageidopen.py
-
-myscript autostart line:
-ExecStart=/usr/bin/python3 -u imageidopen.py
-`````````````
-Run the WalletConnect Wallet with all signatures auto-signed + special Safe.Global multisig pending transaction notification bar (must run as root):
-
-`````````````
-sudo -E python3 imageidopensafe.py
-
-myscript autostart line:
-ExecStart=/usr/bin/python3 -u imageidopensafe.py
 `````````````
