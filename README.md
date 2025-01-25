@@ -20,6 +20,9 @@ Want WalletConnect?: camera module (optional) -https://a.co/d/3tTFnJs
 
 ![image](https://nftydaze.com/wp-content/uploads/2023/04/IMG-1435.jpg)
 
+# User Interface Menu Flow
+![IMG_5963](https://github.com/user-attachments/assets/8df36b67-a583-497c-b559-e5e7b92dd86b)
+
 Plus there are a ton more buttons available to come up with your own essential wallet interactions!
 
 ✅ account signing?
@@ -100,10 +103,6 @@ sudo python3 piswapL2.py
 
 Want to easily customize token swapping function? Any token pair from uniswapV3 will work! 
 Edit config.json file in each "L2 chain" directory.  Make sure you update the infura API, token in and token out names, symbol, contract address, decimal place, API, and pool fee (ie 100, 300). Want more token pairs available? Add more config.jsons to the chain directory.  config2.json, config3.json, config4.json etc.
-
-# User Interface Menu Flow
-
-![IMG_5963](https://github.com/user-attachments/assets/8df36b67-a583-497c-b559-e5e7b92dd86b)
 
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
