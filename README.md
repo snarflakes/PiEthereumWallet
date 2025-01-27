@@ -1,12 +1,12 @@
 #  PiSwap L2. Physical Keys, Click Button Swaps, Open Source
 
-An Ethereum/EVM/L2 Hardware Wallet (Raspberry Pi inside) with multi-L2 chain contract direct token Swap and physically hot-swappable private keys.
+An Ethereum/EVM/L2 Hardware Wallet (Raspberry Pi inside) with multi-L2 chain uniswap contract direct token Swap and physically hot-swappable private keys.
 NOT AUDITED. Do not use to store substantial quantities of funds. 
 
 Bringing the blockchain to physical life, using swappable private keys inside microSD cards, clicky buttons, open source code, and a bright informative display, this device makes for a great way to educate others, onboard, build, and swap tokens. No coding experience needed!
-Old Device Demonstration Videos including Private Key Management can be viewed here: https://www.youtube.com/channel/UCEF_x9fTZcyoEAE-GllaJ8w
+Demonstration Videos: https://www.youtube.com/channel/UCEF_x9fTZcyoEAE-GllaJ8w
 
-For $30 (+ cost of microSD cards) you can make your own! Load and gift small cold wallets to friends and family.
+For $50 (+ cost of microSD cards) you can make your own! Load and gift small cold wallets to friends and family.
 Don't want the tax implications of sending your ETH?  Just send USDC + gas. 
 Hand the hardware to your 💘 crypto noob/student/child, they press and hold the physical button, it instantly routes a contract direct uniswap transaction to convert all the USDC to ETH(easily customize this swap to a token of your choosing)!
 
@@ -14,7 +14,8 @@ PART List:
 raspberry pi zero WH (needs header pins): https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/
 (stock info) https://www.nowinstock.net/computers/developmentboards/raspberrypi/
 ST screen: https://a.co/d/iT952LE
-microSD card (can go smaller size and generic to reduce costs):https://a.co/d/50a2JCb
+microSD card for new private keys (smallest size and generic to reduce costs):https://a.co/d/50a2JCb
+microSD card reader with OTG (microUSB) adapter - https://www.amazon.com/dp/B096SGHJ4K?_encoding=UTF8&psc=1&ref_=cm_sw_r_cp_ud_dp_R4AX78ZPNXCDEEJW5CXM&newOGT=1
 battery pack (optional) - https://a.co/d/fKbBJRV
 Want WalletConnect?: camera module (optional) -https://a.co/d/3tTFnJs
 
@@ -36,7 +37,7 @@ Plus there are a ton more buttons available to come up with your own essential w
 A) Basic Raspberry Pi Zero setup for NOOBS.  start here if you have no clue what to do with your hardware or are very security minded.
 https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html
 
-OR if you want seemless wifi connectivity at every boot (best option)
+OR if you want seamless wifi connectivity at every boot (best option)
 
 B) Homebridge Raspberry Pi Zero setup: add a server for easy wifi connection when traveling around to peoples houses. You need a wifi or mobile phone hotspot connection for the wallet to work.
 https://homebridge.io/raspberry-pi-image
@@ -118,7 +119,7 @@ Change your user logon to be a very strong 10 digit password with symbol/upper/l
 
 Install free opensource software WireguardVPN by following instructions here: https://pivpn.io/
 
-# WalletConnect/Safe.Global Optional Installation Instructions
+# WalletConnect/Safe.Global Optional Installation Instructions (broken currently)
 ````
 [camera first]
 sudo apt-get install python3-opencv
