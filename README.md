@@ -119,7 +119,7 @@ Change your user logon to be a very strong 10 digit password with symbol/upper/l
 
 Install free opensource software WireguardVPN by following instructions here: https://pivpn.io/
 
-# WalletConnect/Safe.Global Optional Installation Instructions (broken currently)
+# WalletConnect Optional Installation Instructions
 ````
 [camera first]
 sudo apt-get install python3-opencv
@@ -128,7 +128,7 @@ sudo apt-get install libqt4-test python3-sip python3-pyqt5 libqtgui4 libjasper-d
 ##TURN ON CAMERA navigate through accessories on menu- 
 sudo raspi-config
 
-[walletconnect function] imageid.py (only pushes through personal sign) and imageidopen.py (pushes through all transactions and signatures without "warning" user interface) imageidopensafe.py (includes imageidopen AND notification bar alerting users of the presence of a multisig safe transaction needing signing)
+[walletconnect function] (modules below are complex to install due to time/compute power of raspberry pi zero)
 sudo apt-get install libssl-dev
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 python3 -m pip install wsproto==1.0.0
