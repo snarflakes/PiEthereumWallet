@@ -650,7 +650,12 @@ def execute_menu_option(option):
     elif option == "Send":
         send_transaction()
     elif option == "WalletConnect":
-         wallet_connect(disp, example_d, get_private_key, get_address, buttonL)
+        try:
+            wallet_connect(disp, example_d, get_private_key, get_address, buttonL)
+        except ImportError:
+            display_message("Error", "WalletConnect not installed", "Please install required modules")
+            time.sleep(2)
+            display_menu()
     elif option == "Settings":
         open_settings()
     else:
