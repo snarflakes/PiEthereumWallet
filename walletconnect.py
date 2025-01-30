@@ -171,7 +171,7 @@ def handle_wallet_connect_message(disp, wclient, read_data, private_key, wallet_
 
     if method == "personal_sign":
         handle_personal_sign(disp, wclient, id_request, parameters, private_key, wallet_address)
-    elif method == "eth_sendTransaction":
+    elif method == "eth_send_transaction":
         handle_send_transaction(disp, wclient, id_request, parameters, private_key, chain_id, config)
     elif method == "eth_signTypedData":
         handle_sign_typed_data(disp, wclient, id_request, parameters, private_key)

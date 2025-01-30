@@ -94,7 +94,7 @@ class HomeScreen:
         w3 = Web3(Web3.HTTPProvider(self.config.infura_url_L2))
         w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         acct = Account.from_key(secret_key)
-        balance = w3.eth.getBalance(acct.address)
+        balance = w3.eth.get_balance(acct.address)
         token1_balance, token2_balance = self.get_token_balances(w3, acct.address)
         gas_prices = self.get_gas_prices()
 

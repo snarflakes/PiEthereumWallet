@@ -58,7 +58,7 @@ def check_gas_balance(w3, wallet_address, chain_id):
     balance = w3.eth.get_balance(wallet_address)
     
     # Define minimum gas amount (in wei)
-    min_gas = w3.toWei(0.00001, 'ether')  # Adjust this value as needed
+    min_gas = w3.to_wei(0.00001, 'ether')  # Adjust this value as needed
     
     if balance < min_gas:
         if chain_id in [1, 10, 42161, 8453]:  # Ethereum, Optimism, Arbitrum, Base
