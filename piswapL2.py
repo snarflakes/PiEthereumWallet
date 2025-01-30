@@ -78,7 +78,7 @@ from web3.auto import w3
 from eth_account import messages
 
 from home_screen import HomeScreen
-from walletconnect import wallet_connect
+#from walletconnect import wallet_connect
 
 #load and process external variables from config.json
 from config_loader import load_config
@@ -646,9 +646,15 @@ def execute_menu_option(option):
         send_transaction()
     elif option == "WalletConnect":
         try:
+            display_loading()
+            from walletconnect import wallet_connect
             wallet_connect(disp, example_d, get_private_key, get_address, buttonL)
         except ImportError:
             display_message("Error", "WalletConnect not installed", "Please install required modules")
+            time.sleep(2)
+            display_menu()
+        except Exception as e:
+            display_message("Error", "Unexpected error, missing submodule possible", str(e))
             time.sleep(2)
             display_menu()
     elif option == "Settings":
