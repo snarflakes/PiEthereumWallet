@@ -46,7 +46,7 @@ Use this disk imager to burn a copy of one of those operating system "images" on
 
 after above completed steps proceed below. 
 
-Make sure you have the following dependencies (modules):
+Make sure you have the following dependencies (modules) we build most modules in venv (virtual environment):
 
 ````
 sudo apt-get update
@@ -54,28 +54,33 @@ or
 sudo apt-get update --allow-releaseinfo-change
 
 sudo apt-get -y install python3-pip
+sudo apt install -y python3-lgpio
+
+python3 -m venv ~/myvenv
+source ~/myvenv/bin/activate
+source ~/.bashrc
+
 ````
 
 Install these libraries by running:
 
 ````
-sudo pip3 install st7789
-sudo pip3 install pillow
-sudo pip3 install board
-sudo pip3 install gpiozero
-sudo pip3 install adafruit-blinka
-sudo apt-get install libopenjp2-7
-sudo pip3 install RPI.GPIO
-sudo apt-get install python3-numpy 
-sudo pip3 install adafruit-circuitpython-rgb-display
-sudo pip3 install qrcode
-sudo pip3 install web3
-sudo pip3 install uniswap-python
-sudo pip3 install spidev
-sudo raspberry-config
-(enable SPI in menu: go to interface options, go to SPI, enable SPI)
-sudo reboot now
+pip install st7789 pillow board gpiozero adafruit-blinka RPI.GPIO adafruit-circuitpython-rgb-display qrcode web3 uniswap-python spidev eth-account
+pip install lgpio
 
+sudo apt install -y libopenblas-dev libatlas-base-dev
+sudo apt-get install -y libopenjp2-7 python3-numpy
+
+sudo usermod -aG gpio pi
+
+Optional for walletconnect function (these are lengthy challenging installs on a pi zero, flash the provided image to skip) :
+pip install imutils opencv-python-headless py?walletconnect
+
+sudo raspi-config
+--select interface
+--enable SPI
+
+reboot
 ````
 
 Prerequisites
@@ -96,10 +101,9 @@ cd PiEthereumWallet
 
 # Application Details
 
-Run the PiSwapL2.py (must run as root):
-
+Run the PiSwapL2.py:
 `````````````
-sudo python3 piswapL2.py
+python3 piswapL2.py
 `````````````
 
 Want to easily customize token swapping function? Any token pair from uniswapV3 will work! 
