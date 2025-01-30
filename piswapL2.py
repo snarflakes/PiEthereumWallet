@@ -15,11 +15,6 @@ import glob
 import gc
 import PIL
 from signal import pause
-from PIL import Image, ImageOps
-from PIL import ImageDraw
-from PIL import ImageFont
-from PIL import ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = True
 from eth_account import Account
 
 #sys.path.append('/home/pi/.local/lib/python3.7/site-packages')
@@ -39,7 +34,7 @@ import random
 from colorsys import hsv_to_rgb
 import board
 from digitalio import DigitalInOut, Direction
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFile, ImageOps
 import adafruit_rgb_display.st7789 as st7789
 
 #qr code modules
@@ -48,7 +43,7 @@ import argparse
 import datetime
 from csv import reader
        #import cv2
-import imutils
+#import imutils
        #import pyzbar.pyzbar as pyzbar
 
 #check internet
@@ -865,7 +860,7 @@ def validate_wallet_data():
         account = Account.from_key(private_key)
         derived_address = account.address
 
-        if Web3.toChecksumAddress(derived_address) != Web3.toChecksumAddress(stored_address):
+        if Web3.to_checksum_address(derived_address) != Web3.to_checksum_address(stored_address):
             print("Error: Stored address does not match the address derived from the private key")
             return False
 
