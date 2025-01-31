@@ -114,8 +114,8 @@ Edit config.json file in each "L2 chain" directory.  Make sure you update the in
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
 
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
-Follow these instructions: (make sure you set USER: root for both copies!). Also make sure you pick which wallet version file you want to auto-run on boot, image.py for L1, polygonimage.py for L2. Also make sure you don't require the device to be internet connected for the start-up script to start! The wallet program will alert you if there are internet issues.
-https://domoticproject.com/creating-raspberry-pi-service/
+Follow these instructions: https://domoticproject.com/creating-raspberry-pi-service/
+Don't forget to add the activate myvenv code in the myscript file, example here: ExecStart=/bin/bash -c 'source /home/pi/myvenv/bin/activate && python /home/pi/PiEthereumWallet/piswapL2.py'
 
 # For extra security in public places? Make these mods to your OS.
 
