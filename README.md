@@ -62,11 +62,13 @@ source ~/.bashrc
 
 ````
 
-Install these libraries by running:
+Install these libraries by running (only web3 version listed below works):
 
 ````
-pip install st7789 pillow board gpiozero adafruit-blinka RPI.GPIO adafruit-circuitpython-rgb-display qrcode web3 uniswap-python spidev eth-account
+pip install st7789 pillow board gpiozero adafruit-blinka RPI.GPIO adafruit-circuitpython-rgb-display qrcode spidev eth-account
 pip install lgpio
+pip install web3==6.20.3
+pip install uniswap-python
 
 sudo apt install -y libopenblas-dev libatlas-base-dev
 sudo apt-get install -y libopenjp2-7 python3-numpy
