@@ -84,7 +84,7 @@ def display_message(disp, message, is_error=False):
     current_line = []
     
     for word in words:
-        if d.textsize(' '.join(current_line + [word]), font=font)[0] <= 220:
+        if d.textbbox((0, 0), ' '.join(current_line + [word]), font=font)[2] <= 220:
             current_line.append(word)
         else:
             lines.append(' '.join(current_line))
@@ -300,7 +300,7 @@ def display_message(disp, message, is_error=False):
     current_line = []
     
     for word in words:
-        if d.textsize(' '.join(current_line + [word]), font=font)[0] <= 220:
+        if d.textbbox((0, 0), ' '.join(current_line + [word]), font=font)[2] <= 220:
             current_line.append(word)
         else:
             lines.append(' '.join(current_line))
