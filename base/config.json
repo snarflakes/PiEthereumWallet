@@ -26,7 +26,7 @@
 
   "L2_output_name": "cbBTC",
   "L2_output_address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
-  "L2_token_decimal_output": 1000000000000000000,
+  "L2_token_decimal_output": 100000000,
 
   "_comment4": "Copy ABI in 'Export ABI'. JSON format from etherscan or other chain explorers. only include area after 'result.' most explorers require to be added at the end of request - &apikey= - Select implementation contract ABI, not admin:",
   "_comment5": "InputABIs",

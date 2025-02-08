@@ -2,7 +2,8 @@ import time
 import qrcode
 from web3 import Web3
 from eth_account import Account
-from uniswap import Uniswap
+#from uniswap import Uniswap
+from uniswap_universal_router import Uniswap
 import json
 import os
 import sys
@@ -84,7 +85,7 @@ def display_message(disp, message, is_error=False):
     current_line = []
     
     for word in words:
-        if d.textsize(' '.join(current_line + [word]), font=font)[0] <= 220:
+        if d.textbbox((0, 0), ' '.join(current_line + [word]), font=font)[2] <= 220:
             current_line.append(word)
         else:
             lines.append(' '.join(current_line))
@@ -117,7 +118,7 @@ def swap_tokens(disp, wallet_address, private_key, from_token, to_token, w3):
             display_message(disp, "Config Error\nFailed to load configuration", is_error=True)
             return None
 
-        uniswap = Uniswap(wallet_address, private_key, version=3, provider=config.infura_url_L2, web3=w3)
+        uniswap = Uniswap(wallet_address, private_key, provider=config.infura_url_L2, web3=w3)
         
         # Determine if the input token is native (ETH/MATIC)
         is_native_input = from_token.lower() == '0x0000000000000000000000000000000000000000'
@@ -164,13 +165,14 @@ def swap_tokens(disp, wallet_address, private_key, from_token, to_token, w3):
         
         # Check allowance if it's not a native token input
         if not is_native_input:
-            allowance = token_contract.functions.allowance(wallet_address, uniswap.address).call()
+            allowance = token_contract.functions.allowance(wallet_address, uniswap.router_address).call()
+            print(f"Token allowance. Current: {allowance}")
             if allowance < amount:
-                print(f"Insufficient allowance. Current: {allowance}, Required: {amount}")
+                print(f"Insufficient token allowance. Current: {allowance}, Required: {amount}")
                 # Optionally, you can add code here to increase the allowance
         
         # Perform the swap
-        tx_hash = uniswap.make_trade(from_token, to_token, amount, fee=config.L2_poolfee, slippage=slippage)
+        tx_hash = uniswap.make_trade(from_token, to_token, amount, slippage=slippage, fee=config.L2_poolfee, pool_version="v3")
         
         return tx_hash
     except Exception as e:
@@ -300,7 +302,7 @@ def display_message(disp, message, is_error=False):
     current_line = []
     
     for word in words:
-        if d.textsize(' '.join(current_line + [word]), font=font)[0] <= 220:
+        if d.textbbox((0, 0), ' '.join(current_line + [word]), font=font)[2] <= 220:
             current_line.append(word)
         else:
             lines.append(' '.join(current_line))
