@@ -105,7 +105,7 @@ cd PiEthereumWallet
 
 Run the PiSwapL2.py:
 `````````````
-python3 piswapL2.py
+sudo -E /home/pi/myvenv/bin/python3 piswapL2.py
 `````````````
 
 Want to easily customize token swapping function? Any token pair from uniswapV3 will work! 
@@ -115,8 +115,25 @@ Edit config.json file in each "L2 chain" directory.  Make sure you update the in
 
 In order to have a command or program run when the Pi boots, you can add it as a service. Once this is done, you can start/stop enable/disable from the linux prompt.
 Follow these instructions: https://domoticproject.com/creating-raspberry-pi-service/
-Don't forget to add the activate myvenv code in the myscript file, example here: ExecStart=/bin/bash -c 'source /home/pi/myvenv/bin/activate && python /home/pi/PiEthereumWallet/piswapL2.py'
+Don't forget to add the activate myvenv code in the myscript file.  create file (myscript.service) add code below and save in: etc/systemd/system. turn on: sudo systemctl enable myscript.service
+````
+[Unit]
+Description=piswapL2
+After=network.target
 
+[Service]
+Type=simple
+User=root
+Group=pi
+Environment="PATH=/home/pi/myvenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="PYTHONPATH=/home/pi/myvenv/lib/python3.7/site-packages"
+WorkingDirectory=/home/pi/PiEthereumWallet
+ExecStart=/bin/bash -c 'source /home/pi/myvenv/bin/activate && exec /home/pi/myvenv/bin/python3 piswapL2.py'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+````
 # For extra security in public places? Make these mods to your OS.
 
 Change your user logon to be a very strong 10 digit password with symbol/upper/lowercase letter/numbers.  Also you can reduce the rate of incorrect authentication attempts with https://www.fail2ban.org/wiki/index.php/Main_Page
