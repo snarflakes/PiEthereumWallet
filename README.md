@@ -108,7 +108,9 @@ Run the PiSwapL2.py:
 sudo -E /home/pi/myvenv/bin/python3 piswapL2.py
 `````````````
 
-Want to easily customize token swapping function? Any token pair from uniswapV3 will work! 
+# Want to easily customize token swapping function? 
+
+Any token pair from a uniswapV3 pool will work! 
 Edit config.json file in each "L2 chain" directory.  Make sure you update the infura API, token in and token out names, symbol, contract address, decimal place, API, and pool fee (ie 100, 300). Want more token pairs available? Add more config.jsons to the chain directory.  config2.json, config3.json, config4.json etc.
 
 # Add as a service: How to have the Ethereum Wallet Program run whenever the Pi Boots Up 
@@ -171,4 +173,3 @@ added sys.path directions directly into the file so it would point to the locati
 `````````````
 Caution when running WalletConnect Wallet all signatures are auto-signed (be careful as any transaction you agree to will be auto signed with no confirmation
 
-`````````````
