@@ -1,1 +1,1 @@
-arbitrum:config.json
+polygon:config.json
