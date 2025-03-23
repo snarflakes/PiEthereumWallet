@@ -94,8 +94,22 @@ class HomeScreen:
         w3 = Web3(Web3.HTTPProvider(self.config.infura_url_L2))
         w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         acct = Account.from_key(secret_key)
-        balance = w3.eth.get_balance(acct.address)
+        gas_balance = w3.eth.get_balance(acct.address)
         token1_balance, token2_balance = self.get_token_balances(w3, acct.address)
+
+        # Check conditions for gas fill-up
+        if gas_balance == 0 and (token1_balance > 0 or token2_balance > 0):
+            try:
+                # Import here to avoid circular imports
+                from gasfillup import execute_gas_fillup
+                execute_gas_fillup(
+                    provider_url=self.config.infura_url_L2,
+                    disp=self.disp,
+                )
+            except Exception as e:
+                print(f"Failed to execute gas fillup: {e}")
+
+        # Continue with regular rendering...
         gas_prices = self.get_gas_prices()
 
         # Draw network indicator at the top
@@ -176,9 +190,9 @@ class HomeScreen:
 
     def format_token_balance(self, balance, token_name):
         """Format token balance consistently based on token type"""
-        if token_name.upper() == "WBTC":
+        if "BTC" in token_name.upper():  # Handle any token with BTC in its name
             if balance < 0.00001:
-                return f"{balance:.2e}"  # Only WBTC uses scientific notation for small amounts
+                return f"{balance:.2e}"  # Use scientific notation for small amounts
             return f"{round(balance, 8)}"  # Normal BTC amounts with 8 decimals
         elif token_name.upper() in ["USDC", "USDT", "DAI"]:
             if balance == 0:
@@ -279,3 +293,4 @@ class HomeScreen:
         """Add subtle navigation hint"""
         font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 12)
         draw.text((230, 230), "← Menu", font=font, fill="black", anchor="rm")
+
